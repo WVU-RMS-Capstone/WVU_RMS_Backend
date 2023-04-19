@@ -188,6 +188,10 @@
 
             while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                 $i++;
+                $tsql2 = "SELECT RoutineName, ExerciseIds, SetNums, RepNums FROM [dbo].[Routines] WHERE RoutineId = $row[RoutineId]";
+                $stmt2 = sqlsrv_query($this->db, $tsql2);
+                $row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC);
+                array_push($row,$row2);
                 $rows[] = array('data' => $row);
             }
             if($i == 0){
