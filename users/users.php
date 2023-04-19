@@ -191,8 +191,8 @@
                 $tsql2 = "SELECT RoutineName, ExerciseIds, SetNums, RepNums FROM [dbo].[Routines] WHERE RoutineId = $row[RoutineId]";
                 $stmt2 = sqlsrv_query($this->db, $tsql2);
                 $row2 = sqlsrv_fetch_array($stmt2, SQLSRV_FETCH_ASSOC);
-                array_push($row,$row2);
-                $rows[] = array('data' => $row);
+                $row3 = array_merge($row,$row2);
+                $rows[] = array('data' => $row3);
             }
             if($i == 0){
                 $rows = "No assigned routines at this time.";
