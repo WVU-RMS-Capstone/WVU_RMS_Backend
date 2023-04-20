@@ -535,9 +535,9 @@
             $assignId = $_GET['assignId'];
 
             if ($assignId == "") {
-                $assignId = null;
+                $assignId = 0;
             }
-
+            
             date_default_timezone_set('America/New_York');
             $date = date('Y-m-d h:i:s a');
             
@@ -575,7 +575,7 @@
             }
 
 
-            if ($row['AssignId'] != null) {
+            if ($row['AssignId'] != 0) {
                 $signcheck = "SELECT Sign FROM Assignments WHERE AssignmentId = $row[AssignId]";
                 $res2 = sqlsrv_query($this->db, $signcheck);
                 $row2 = sqlsrv_fetch_array($res2, SQLSRV_FETCH_ASSOC );
@@ -613,7 +613,7 @@
                 return False;
             }
 
-            if ($row['AssignId'] != null) {
+            if ($row['AssignId'] != 0) {
                 $signcheck = "SELECT Sign FROM Assignments WHERE AssignmentId = $row[AssignId]";
                 $res2 = sqlsrv_query($this->db, $signcheck);
                 $row2 = sqlsrv_fetch_array($res2, SQLSRV_FETCH_ASSOC );
@@ -683,7 +683,7 @@
                 return False;
             }
 
-            if ($row['AssignId'] != null) {
+            if ($row['AssignId'] != 0) {
                 $tsql2 = "DELETE FROM [dbo].[Assignments] WHERE AssignmentId = $row[AssignId]";
                 $stmt2 = sqlsrv_query($this->db, $tsql2);
 
