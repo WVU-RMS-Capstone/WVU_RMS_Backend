@@ -683,11 +683,23 @@
                 return False;
             }
 
+            if ($row['AssignId'] != null) {
+                $tsql2 = "DELETE FROM [dbo].[Assignments] WHERE AssignmentId = $row[AssignId]";
+                $stmt2 = sqlsrv_query($this->db, $tsql2);
+
+                if($stmt2 === False){  
+                    echo "Error in statement preparation/execution.\n";  
+                    die( print_r( sqlsrv_errors(), True));  
+                    echo json_encode(False);
+                    return False;
+                }
+            }
+
             date_default_timezone_set('America/New_York');
             $date = date('m-d-Y h:i:s a');
             $s = $row['Start'];
             $sdate = $s->format('m-d-Y h:i:s a');
-            $tsql = "INSERT INTO [dbo].[Activity] values ($this->UserID,'$sdate','$date','$notes',$row[RoutineId])";
+            $tsql = "INSERT INTO [dbo].[Activity] values ($this->UserID,'$sdate','$date','$notes',$row[RoutineId],'')";
             $stmt = sqlsrv_query($this->db, $tsql);
             if($stmt === False){  
                 echo "Error in statement preparation/execution.\n";  
