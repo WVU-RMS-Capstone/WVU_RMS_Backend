@@ -23,6 +23,12 @@
     //
     // ----------------------------------------------------------------------------------------------------------------------------------
 
+    /* 
+    This file contains functions that can be called by the front end.
+    The front end does this by passing in links that are listed above each function.
+    Some of the links have variables at the end that can be changed based on user input.
+    */
+
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: GET, POST");
@@ -59,6 +65,12 @@
             http_response_code(401);
             die();
         }
+
+        /* 
+        This section is where new methods have to be declared in order for use.
+        The format should be the same the string at the end of the if is action passed into the link.
+        The function is inside the if statement. 
+        */
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'userinfo') {
             $user->getUserInfo();
@@ -140,6 +152,7 @@
             $this->type = $r[0];
         }
 
+        // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=getUserRoutines
         function getUserInfo(){
             // returns user info
             if(middlewareAuth($this->UserID) !== true){
@@ -167,6 +180,8 @@
 
         }
 
+
+        // Returns all of the assigned routines for the currently signed in user.
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=getUserRoutines
         function getUserRoutines(){
@@ -202,6 +217,9 @@
 
         }
 
+        // Takes in a userId associated with a player, a routineId, notes from the AT, and a bit to say if the routine needs signed off on.
+        // Creates an assignment in the Assigments table
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=assignUserRoutines&user=1&routine=1&notes=Rest&check=1
         function assignUserRoutines(){
 
@@ -226,10 +244,10 @@
             }
             echo json_encode(True);
             return True;
-            // Assigns a user a routine
-            // Evaluate Privledges
-
         }
+
+        // Takes in an exercise name, a link to a YouTube video, and a description.
+        // Creates a new exercise in the exercise table.
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=addExercise&name=HamstringStretch&link=https://www.youtube.com/watch?v=T_l0AyZywjU&description=Hold
         function addExercise() {
@@ -269,6 +287,8 @@
             return True;
         }
 
+        // Removes the user of the specified ID
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=removeUser&ID=2
         function removeUser(){
 
@@ -293,6 +313,9 @@
             return True;
 
         }
+
+        // Takes in the ID of an exercise.
+        // Returns the name, YouTube link, and description of the specified exercise.
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=getExercise&ID=2
         function getExercise(){
@@ -320,6 +343,9 @@
 
         }
 
+        // Takes in the ID of a routine.
+        // Gets the name, exercises, sets, and reps of that routine.
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=routineDetails&ID=1
         function routineDetails(){
 
@@ -345,6 +371,8 @@
             http_response_code(200);
 
         }
+
+        // Returns the names and IDs of every general routine.
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=getRoutines
         function getRoutines() {
@@ -374,6 +402,8 @@
             http_response_code(200);
         }
 
+        // Removes the routine with the specified ID
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=removeRoutine&ID=3
         function removeRoutine() {
 
@@ -399,6 +429,8 @@
             return True;
         }
 
+        // Removes the assignment from the assignment table of the specified ID
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=removeAssignment&ID=3
         function removeAssignment() {
 
@@ -423,6 +455,8 @@
             echo json_encode(True);
             return True;
         }
+
+        // Takes in the information to create a set and creates it
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=createRoutine&name=Legs1&IDs=4/11/13&reps=10/10/10&sets=3/4/5&visible=1
         function createRoutine() {
@@ -465,6 +499,10 @@
             return True;
         }
 
+        // Pulls the roster of players based on a passed in name and position.
+        // The position can be any basic position as well as general offense, defense, or special teams
+        // The name can be either first or last as well as both first and last.
+        // The function filters the results to only return the players the fit the description
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=roster&name=Chase&position=WR
         function roster() {
@@ -522,6 +560,10 @@
             http_response_code(200);
         }
 
+        // This function is called when a player starts a routine.
+        // It takes in the routineId of the routine they are performing as well as the assignmentId of the assignment.
+        // The assignmentId is blank if the routine is a general routine
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=startAct&routineId=1&assignId=
         function startAct() {
 
@@ -553,6 +595,8 @@
             return True;
 
         }
+
+        // This function checks if the routine a player is performing requires a signoff by an AT
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=signOffRequired
         function signOffRequired() {
@@ -589,6 +633,11 @@
                 }
             }
         }
+
+        // This function is called when an athlete finishes a routine and an AT sign off is required.
+        // Takes in any notes the player had and the code from the AT.
+        // Returns "Invalid Code" if the code inputted doesn't match the code of any trainer.
+        // Else it creates an entry in the activity table of the finished routine.
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=endActSign&notes=Sore Back&code=1111
         function endActSign() {
@@ -662,6 +711,10 @@
             return True;
         }
 
+        // This function is called when an athlete finishes a routine and an AT sign off is not required.
+        // Takes in any notes the player had.
+        // Creates an entry in the activity table of the finished routine.
+
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=endAct&notes=Sore Back
         function endAct() {
             if(middlewareAuth($this->UserID) !== true){
@@ -714,6 +767,10 @@
             echo json_encode(True);
             return True;
         }
+
+        // Pulls log entries from the Activity table and puts them in a PDF that is returned to the front end
+        // Takes in the start date, end date, name, and position.
+        // Only pulls data from those dates and from the specified players. Works similar to Roster().
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=pullLogs&sdate=2023-04-11&edate=2023-04-12&name=Chase&position=WR
         function pullLogs(){
