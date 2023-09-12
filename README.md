@@ -3,6 +3,8 @@
 # WVU Players Companion - Backend API - User Manual
 Manual goes over how to use the api in conjunciton with the native ios application.
 
+This repo, when modifications are made to the `main` branch, will automatically update the azure server as it is watching the repository. So, to make a new version of the API (updating/adding new features), commit to `main` with the changes you want to make. Being sure to test locally first.
+
 Note: 
 Send all traffic here.
 ### Domain_Name = https://restapi-playerscompanion.azurewebsites.net
