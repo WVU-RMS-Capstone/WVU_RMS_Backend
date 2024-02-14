@@ -1,3 +1,3 @@
 <?php
-    echo "<h1>WVU PLAYERS COMPANION RMS REST API </h1>";
+    echo "<h1>Rehabilitation Monitoring System</h1>";
 ?>
