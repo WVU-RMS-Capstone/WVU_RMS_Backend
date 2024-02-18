@@ -56,7 +56,7 @@
         $db = $database->getConnection();
         echo 'did we reach?';
         // Check if username exists
-        $check = "SELECT UserID FROM [dbo].[TestUsers] WHERE userUID = '$userUID'";
+        $check = "SELECT UID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
         echo 'testing';
