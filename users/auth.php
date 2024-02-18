@@ -54,7 +54,7 @@
         // init db connection
         $database = new database();
         $db = $database->getConnection();
-
+        echo 'did we reach?';
         // Check if username exists
         $check = "SELECT UserID FROM [dbo].[TestUsers] WHERE userUID = '$userUID'";
         $res = sqlsrv_query($db, $check);
