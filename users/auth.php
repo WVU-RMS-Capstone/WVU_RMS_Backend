@@ -59,6 +59,8 @@
         $check = "SELECT UserID FROM [dbo].[TestUsers] WHERE userUID = '$userUID'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        echo 'testing';
+
         if( $r !== NULL ){
             echo 'Username Already Exists.';
             echo json_encode("ID: $r[0]");
@@ -102,6 +104,7 @@
         sqlsrv_free_stmt($stmt);
         sqlsrv_close($db);
         echo json_encode(True);
+        echo 'testing';
         return True;
     }
 
