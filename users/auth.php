@@ -39,6 +39,8 @@
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
+        echo 'testing';
+
         // $user_name = $_GET['name'];
         // $password = md5($_GET['password']);
         // $first_name = $_GET['firstname'];
