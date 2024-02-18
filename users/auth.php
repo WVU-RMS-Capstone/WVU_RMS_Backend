@@ -91,7 +91,7 @@
         // }
 
         // post new User to DB
-        $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, userUID, Email) VALUES ('$first_name', '$last_name', '$userUID', '$email')";
+        $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, UID, Email) VALUES ('$first_name', '$last_name', '$userUID', '$email')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             echo "Error in statement preparation/execution.\n";  
