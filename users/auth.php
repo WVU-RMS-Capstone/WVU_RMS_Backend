@@ -105,6 +105,7 @@
         sqlsrv_close($db);
         echo json_encode(True);
         echo 'testing';
+        http_response_code(200);
         return True;
     }
 
