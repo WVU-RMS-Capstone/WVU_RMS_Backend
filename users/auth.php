@@ -39,18 +39,6 @@
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
-        echo 'testing';
-
-        // $user_name = $_GET['name'];
-        // $password = md5($_GET['password']);
-        // $first_name = $_GET['firstname'];
-        // $middle_name = $_GET['middlename'];
-        // $last_name = $_GET['lastname'];
-        // $type = $_GET['type'];
-        // $player_number = $_GET['playernumber'];
-        // $code = $_GET['code'];
-        // $position = $_GET['position'];
-
         // init db connection
         $database = new database();
         $db = $database->getConnection();
@@ -69,26 +57,6 @@
             sqlsrv_close($db);
             return False;
         }
-
-        // if ($player_number == "") {
-        //     $player_number = null;
-        // }
-        // if ($code == "") {
-        //     $code = null;
-        // }
-        // else {
-        //     $check1 = "SELECT UserID FROM [dbo].[Users] WHERE Code = $code";
-        //     $res1 = sqlsrv_query($db, $check1);
-        //     $r1 = sqlsrv_fetch_array( $res1, SQLSRV_FETCH_NUMERIC );
-        //     if( $r1 !== NULL ){
-        //     echo 'Duplicate Code In Use.';
-        //     echo json_encode("ID: $r1[0]");
-        //     http_response_code(409); 
-        //     sqlsrv_free_stmt($res);
-        //     sqlsrv_close($db);
-        //     return False;
-        // }
-        // }
 
         // post new User to DB
         $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, UID, Email) VALUES ('$first_name', '$last_name', '$userUID', '$email')";
@@ -116,10 +84,12 @@
         $database = new database();
         $db = $database->getConnection();
 
-        $name = $_GET['name'];
-        $password = $_GET['password'];
+        $first_name = $_GET['firstName'];
+        $last_name = $_GET['lastName'];
+        $userUID = $_GET['UID'];
+        $email = $_GET['email'];
 
-        $tsql = "SELECT UserID, Username, Password FROM [dbo].[Users] WHERE Username = '$name'";
+        $tsql = "SELECT UserID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
@@ -133,7 +103,7 @@
             sqlsrv_close($db);
             return False;
         }
-        if ($name === $row[1] && md5($password) === $row[2]){
+        if ($first_name === $row[1] && $last_name === $row[2]){
             
             // Generate Session Token
             // Send session token into database
@@ -148,31 +118,31 @@
             header('Expires: 0'); 
             */
 
-            $UserID = $row[0];
-            $session_token = bin2hex(random_bytes(32));
-            if(middlewareAuth($UserID) === true){
-                echo "Already active session.";
-                http_response_code(200); 
-                return True;
-            }
+            $userUID = $row[0];
+            // $session_token = bin2hex(random_bytes(32));
+            // if(middlewareAuth($UserID) === true){
+            //     echo "Already active session.";
+            //     http_response_code(200); 
+            //     return True;
+            // }
 
             // statement prep to add new active session token
-            $postTokenSQLQuery = "INSERT INTO [dbo].[Sessions] (UserID, SessionToken, ExpirationDateTime) VALUES ($UserID, '$session_token', DATEADD(HOUR, 8, GETDATE()));";
-            $statement = sqlsrv_query($db, $postTokenSQLQuery);
-            if( $statement === false ){  
-                echo "Error in statement preparation/execution.\n";  
-                exit( print_r( sqlsrv_errors(), true));  
-                return False;
-            }
+            // $postTokenSQLQuery = "INSERT INTO [dbo].[Sessions] (UserID, SessionToken, ExpirationDateTime) VALUES ($UserID, '$session_token', DATEADD(HOUR, 8, GETDATE()));";
+            // $statement = sqlsrv_query($db, $postTokenSQLQuery);
+            // if( $statement === false ){  
+            //     echo "Error in statement preparation/execution.\n";  
+            //     exit( print_r( sqlsrv_errors(), true));  
+            //     return False;
+            // }
 
-            // Set cookie in http response header 8 hours (3600*8)
-            setcookie('session_token', $session_token, time() + 3600*8, '/', 'restapi-playerscompanion.azurewebsites.net', true, true);
+            // // Set cookie in http response header 8 hours (3600*8)
+            // setcookie('session_token', $session_token, time() + 3600*8, '/', 'restapi-playerscompanion.azurewebsites.net', true, true);
             
             // return token as json (not needed just extra)
             // you should be able to get the cookie from the header of the response
-            echo json_encode($session_token);
-            http_response_code(200);    
-            return $session_token;
+            // echo json_encode($session_token);
+            // http_response_code(200);    
+            return $userUID;
         }else{
             echo json_encode("Invalid Credientials.");
             http_response_code(401); 
