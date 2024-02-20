@@ -90,7 +90,7 @@
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
-        $tsql = "SELECT UserUID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
+        $tsql = "SELECT UID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
