@@ -42,12 +42,11 @@
         // init db connection
         $database = new database();
         $db = $database->getConnection();
-        echo 'did we reach?';
+        
         // Check if username exists
         $check = "SELECT UID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
-        echo 'testing';
 
         if( $r !== NULL ){
             echo 'Username Already Exists.';
@@ -72,7 +71,6 @@
         sqlsrv_free_stmt($stmt);
         sqlsrv_close($db);
         echo json_encode(True);
-        echo 'testing';
         http_response_code(200);
         return True;
     }
