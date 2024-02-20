@@ -85,12 +85,10 @@
         $database = new database();
         $db = $database->getConnection();
 
-        $first_name = $_GET['firstName'];
-        $last_name = $_GET['lastName'];
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
-        $tsql = "SELECT UID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
+        $tsql = "SELECT UID, firstName, lastName FROM [dbo].[TestUsers] WHERE email = '$email'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
@@ -104,7 +102,7 @@
             sqlsrv_close($db);
             return False;
         }
-        if ($first_name === $row[1] && $last_name === $row[2]){
+        if ($userUID === $row[0] && $email === $row[3]){
             
             // Generate Session Token
             // Send session token into database
