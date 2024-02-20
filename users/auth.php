@@ -100,7 +100,7 @@
             sqlsrv_close($db);
             return False;
         }
-        if ($userUID === $row[0] && $email === $row[3]){
+        if ($userUID === $row[2] && $email === $row[3]){
             
             // Generate Session Token
             // Send session token into database
