@@ -38,6 +38,7 @@
         $last_name = $_GET['lastName'];
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
+        $role = $_GET['role'];
 
         // init db connection
         $database = new database();
@@ -58,7 +59,7 @@
         }
 
         // post new User to DB
-        $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, UID, Email) VALUES ('$first_name', '$last_name', '$userUID', '$email')";
+        $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, UID, Email, Role) VALUES ('$first_name', '$last_name', '$userUID', '$email', '$role)";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             echo "Error in statement preparation/execution.\n";  
@@ -86,7 +87,7 @@
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
-        $tsql = "SELECT UID, firstName, lastName, email FROM [dbo].[TestUsers] WHERE email = '$email'";
+        $tsql = "SELECT UID, firstName, lastName, Email, Role FROM [dbo].[TestUsers] WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
@@ -115,7 +116,7 @@
             header('Expires: 0'); 
             */
 
-            $userUID = $row[0];
+            $role = $row[4];
             // $session_token = bin2hex(random_bytes(32));
             // if(middlewareAuth($UserID) === true){
             //     echo "Already active session.";
@@ -139,7 +140,7 @@
             // you should be able to get the cookie from the header of the response
             // echo json_encode($session_token);
             // http_response_code(200);    
-            return $userUID;
+            return $role;
         }else{
             echo json_encode("Invalid Credientials.");
             http_response_code(401); 
