@@ -138,8 +138,8 @@
             
             // return token as json (not needed just extra)
             // you should be able to get the cookie from the header of the response
-            // echo json_encode($session_token);
-            // http_response_code(200);    
+            echo json_encode($role);
+            http_response_code(200);    
             return $role;
         }else{
             echo json_encode("Invalid Credientials.");
