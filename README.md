@@ -34,7 +34,7 @@ EXAMPLE
 
     https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
 
-Note: This account has already been created so the response from the URL will be `Username Already Exists."ID: 2"`
+Note: This response from the URL will be `Username Already Exists."ID: 2"`
 
 **Return Types**
 `"True"` - If user creation was successful.
