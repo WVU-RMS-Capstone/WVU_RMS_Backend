@@ -41,6 +41,7 @@
         $check = "SELECT exerciseID FROM [dbo].[Exercises] WHERE Name = '$name'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        echo 'reaching';
         if( $r !== NULL ){
             echo 'Workout Already Exists.';
             echo json_encode("ID: $r[0]");
