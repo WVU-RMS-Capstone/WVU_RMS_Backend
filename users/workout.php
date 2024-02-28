@@ -35,7 +35,7 @@
         $name = $_GET['Name'];
         $description = $_GET['Description'];
         $sets = $_GET['Sets'];
-        $reps = $_GET['Gets'];
+        $reps = $_GET['Reps'];
         $body_part = $_GET['BodyPart'];
 
         $check = "SELECT exerciseID FROM [dbo].[Exercises] WHERE Name = '$name'";
