@@ -26,7 +26,7 @@
     /*
     Description: Create Account method will open a new database connections, then pull the first name,
     last name, UID, email and role from the url that is sent. The variables from the url are then stored
-    inside of constant variables so that the information can be checked and stored inside of the table TestUsers. 
+    inside of constant variables so that the information can be checked and stored inside of the table Users. 
 
     Return: True, confirm the account was stored inside the table
 
@@ -44,7 +44,7 @@
         $db = $database->getConnection();
         
         // Check if username exists
-        $check = "SELECT UID FROM [dbo].[TestUsers] WHERE lastName = '$last_name'";
+        $check = "SELECT UID FROM [dbo].[Users] WHERE lastName = '$last_name'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
 
@@ -58,7 +58,7 @@
         }
 
         // post new User to DB
-        $sql = "INSERT INTO [dbo].[TestUsers] (FirstName, LastName, UID, Email, Role) VALUES ('$first_name', '$last_name', '$userUID', '$email', '$role')";
+        $sql = "INSERT INTO [dbo].[Users] (FirstName, LastName, UID, Email, Role) VALUES ('$first_name', '$last_name', '$userUID', '$email', '$role')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             echo "Error in statement preparation/execution.\n";  
@@ -78,7 +78,7 @@
     /*
     Description: Login method will open a new database connections, then pull the email and UID from the
     url that is sent. The variables UID and email are stored in constants used for the select statement
-    that will pull all information from the table TestUsers. 
+    that will pull all information from the table Users. 
 
     Return: Users role either Athlete or Trainer
 
@@ -92,7 +92,7 @@
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
 
-        $tsql = "SELECT UID, firstName, lastName, Email, Role FROM [dbo].[TestUsers] WHERE UID = '$userUID'";
+        $tsql = "SELECT UID, firstName, lastName, Email, Role FROM [dbo].[Users] WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
