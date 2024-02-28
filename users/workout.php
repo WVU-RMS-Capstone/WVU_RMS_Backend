@@ -4,7 +4,7 @@
     header("Access-Control-Allow-Methods: GET, POST");
     include '../config.php';
 
-    if (strpos($_SERVER['REQUEST_URI'], '/users/workouts.php') !== False) {
+    if (strpos($_SERVER['REQUEST_URI'], '/users/workout.php') !== False) {
         $database = new database();
         $db = $database->getConnection();
         
