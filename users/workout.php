@@ -51,7 +51,7 @@
             return False;
         }
 
-        $sql = "INSERT INTO [dbo].[Exercises] (Video, Cover, Name, Description, Sets, Reps, BodyParts) VALUES ('$video', '$cover', '$name', '$description', '$sets', '$reps', '$body_part')";
+        $sql = "INSERT INTO [dbo].[Exercises] (Video, Cover, Name, Description, Sets, Reps, BodyPart) VALUES ('$video', '$cover', '$name', '$description', '$sets', '$reps', '$body_part')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             echo "Error in statement preparation/execution.\n";  
