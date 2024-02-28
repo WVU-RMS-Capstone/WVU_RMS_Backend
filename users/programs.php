@@ -4,7 +4,7 @@
     header("Access-Control-Allow-Methods: GET, POST");
     include '../config.php';
 
-    if (strpos($_SERVER['REQUEST_URI'], '/users/workout.php') !== False) {
+    if (strpos($_SERVER['REQUEST_URI'], '/users/programs.php') !== False) {
         $database = new database();
         $db = $database->getConnection();
         
@@ -43,7 +43,7 @@
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
         echo 'reaching';
         if( $r !== NULL ){
-            echo 'Workout Already Exists.';
+            echo 'Exercise Already Exists.';
             echo json_encode("ID: $r[0]");
             http_response_code(409); 
             sqlsrv_free_stmt($res);
