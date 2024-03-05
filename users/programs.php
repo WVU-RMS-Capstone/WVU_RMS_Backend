@@ -13,6 +13,9 @@
         } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchpremadeprograms') {
             fetchPremadePrograms();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'createprogram') {
+            fetchPremadePrograms();
+        }
         else {
             echo "Specified action not available.";
             http_response_code(201);
@@ -67,6 +70,49 @@
         }
 
         $sql = "INSERT INTO [dbo].[Exercises] (Video, Cover, Name, Description, Sets, Reps, BodyPart) VALUES ('$video', '$cover', '$name', '$description', '$sets', '$reps', '$body_part')";
+        $stmt = sqlsrv_query($db, $sql);
+        if($stmt === False){  
+            // echo "Error in statement preparation/execution.\n";  
+            exit( print_r( sqlsrv_errors(), True));  
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
+        }
+        echo json_encode(True);
+        return true;
+    }
+    
+    /*
+    Description: NOT FINISHED (need to figure out how to pull from exercise table to then store as comma seperated list inside program table)
+
+    Return: True stating the exercise was added (200), False if something went wrong (500), or the ID of a 
+    duplicate exercise which already exists (409) 
+
+    Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createxercise&Video=https://words.com&Cover=img.img&Name=rdl&Description=one-legged-deadlifts&Sets=3&Reps=10&BodyPart=knee
+    */
+    function createProgram() {
+        $database = new database();
+        $db = $database->getConnection();
+
+        // id is auto-incremented
+        // $workout_id = $_GET['workoutID'];
+        $cover = $_GET['Cover'];
+        $program_name = $_GET['ProgramName'];
+        $exercise = $_GET['Exercise'];
+
+        $check = "SELECT programID FROM [dbo].[Programs] WHERE ProgramName = '$program_name'";
+        $res = sqlsrv_query($db, $check);
+        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        if( $r !== NULL ){
+            // echo 'Exercise Already Exists.';
+            echo json_encode($r[0]);
+            http_response_code(409); 
+            sqlsrv_free_stmt($res);
+            sqlsrv_close($db);
+            return False;
+        }
+
+        $sql = "INSERT INTO [dbo].[Programs] (Cover, ProgramName, Exercise) VALUES ('$cover', '$program_name', '$exercise')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             // echo "Error in statement preparation/execution.\n";  
