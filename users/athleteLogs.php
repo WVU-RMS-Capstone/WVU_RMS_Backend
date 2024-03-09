@@ -80,7 +80,7 @@
         $db = $database->getConnection();
 
         // CAN WE PULL FROM USERS AND CHECK IF USER == AT then skip and add the rest?
-        $check = "SELECT athletes FROM [dbo].[Roster]";
+        $check = "SELECT FirstName, LastName FROM [dbo].[Users] WHERE Role = 'Athlete'";
         $res = sqlsrv_query($db, $check);
 
         $row = array();
