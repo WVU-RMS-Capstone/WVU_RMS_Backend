@@ -83,10 +83,10 @@
         $check = "SELECT FirstName, LastName FROM [dbo].[Users] WHERE Role = 'Athlete'";
         $res = sqlsrv_query($db, $check);
 
-        $row = array();
-        while($r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC )){
-            $row[] = array('data' => $r);
-        }
+        // $row = array();
+        // while($r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC )){
+        //     $row[] = array('data' => $r);
+        // }
 
         // free resources
         sqlsrv_free_stmt($stmt);
