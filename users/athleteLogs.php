@@ -79,13 +79,8 @@
         $database = new database();
         $db = $database->getConnection();
 
-        echo json_encode("hello");
-
-        // CAN WE PULL FROM USERS AND CHECK IF USER == AT then skip and add the rest?
         $check = "SELECT FirstName, LastName FROM [dbo].[Users] WHERE Role = 'Athlete'";
         $stmt = sqlsrv_query($db, $check);
-
-        echo json_encode("hi");
 
         $row = array();
         while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
