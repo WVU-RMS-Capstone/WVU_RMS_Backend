@@ -83,14 +83,14 @@
 
         // CAN WE PULL FROM USERS AND CHECK IF USER == AT then skip and add the rest?
         $check = "SELECT FirstName, LastName FROM [dbo].[Users] WHERE Role = 'Athlete'";
-        $res = sqlsrv_query($db, $check);
+        $stmt = sqlsrv_query($db, $check);
 
         echo json_encode("hi");
 
-        // $row = array();
-        // while($r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC )){
-        //     $row[] = array('data' => $r);
-        // }
+        $row = array();
+        while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
+            $row[] = array('data' => $r);
+        }
 
         // free resources
         sqlsrv_free_stmt($stmt);
