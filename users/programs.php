@@ -58,11 +58,16 @@
         }
         
         $rows = array();
-        while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
-            $rows[] = array('data' => $r);
+        $i = 0;
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
         }
-        
-        echo json_encode(rows);
+        if($i == 0){
+            $rows = "No exercises have been added yet.";
+        }
+        echo json_encode($rows);
         http_response_code(200);
         return
     }

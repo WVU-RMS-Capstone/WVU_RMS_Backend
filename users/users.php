@@ -372,36 +372,6 @@
 
         }
 
-        // Returns the names and IDs of every general routine.
-
-        // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=getRoutines
-        function getRoutines() {
-            if(middlewareAuth($this->UserID) !== true){
-                echo "Session expired. Please login again.";
-                http_response_code(401);
-                die();
-            }
-
-            $tsql = "SELECT RoutineId, RoutineName FROM [dbo].[Routines] WHERE Visible = 1 ORDER BY RoutineName";
-            $stmt = sqlsrv_query($this->db, $tsql);
-            if( $stmt === false ){  
-                echo "Error in statement preparation/execution.\n";  
-                die( print_r( sqlsrv_errors(), true));  
-            }
-            $rows = array();
-            $i = 0;
-
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                $i++;
-                $rows[] = array('data' => $row);
-            }
-            if($i == 0){
-                $rows = "No routines in the system.";
-            }
-            echo json_encode($rows);
-            http_response_code(200);
-        }
-
         // Removes the routine with the specified ID
 
         // EXAMPLE: https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=removeRoutine&ID=3
