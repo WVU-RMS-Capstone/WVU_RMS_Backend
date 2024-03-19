@@ -66,7 +66,6 @@
         }
         echo json_encode($rows);
         http_response_code(200);
-        return
     }
     
     /*
