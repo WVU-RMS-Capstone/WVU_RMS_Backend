@@ -13,8 +13,11 @@
         } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchpremadeprograms') {
             fetchPremadePrograms();
         }
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'createprogram') {
+        } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchpremadeprograms') {
             fetchPremadePrograms();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'createprogram') {
+            fetchAllExercises();
         }
         else {
             echo "Specified action not available.";
@@ -33,6 +36,35 @@
     function fetchPremadePrograms() {
         $database = new database();
         $db = $database->getConnection();
+    }
+    
+    /*
+    Description: 
+
+    Return: ID and name of all exercises in the database
+
+    Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=fetchallexercises
+    */
+    function fetchAllExercises() {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        $tsql = "SELECT exerciseID, Name FROM [dbo].[Exercises]";
+        $stmt = sqlsrv_query($db, $tsql);
+        if( $stmt === false ){  
+            echo "Something went wrong fetching the exercises"; 
+            http_response_code(500); 
+            exit( print_r( sqlsrv_errors(), true));  
+        }
+        
+        $rows = array();
+        while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
+            $rows[] = array('data' => $r);
+        }
+        
+        echo json_encode(rows);
+        http_response_code(200);
+        return
     }
     
     /*
