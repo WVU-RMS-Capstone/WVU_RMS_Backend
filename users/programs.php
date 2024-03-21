@@ -38,7 +38,7 @@
     /*
     Description: 
 
-    Return: ID and name of all exercises in the database
+    Return: ID, name, and body part of all exercises in the database
 
     Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=fetchallexercises
     */
@@ -46,7 +46,7 @@
         $database = new database();
         $db = $database->getConnection();
         
-        $tsql = "SELECT exerciseID, Name FROM [dbo].[Exercises]";
+        $tsql = "SELECT exerciseID, Name, BodyPart FROM [dbo].[Exercises]";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Something went wrong fetching the exercises"; 
