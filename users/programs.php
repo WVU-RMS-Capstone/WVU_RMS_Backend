@@ -46,20 +46,7 @@
             echo "Error in statement preparation/execution.\n";  
             exit( print_r( sqlsrv_errors(), true));  
         }
-        // echo "hello there";
-        // Check to see if the user is stored and created within the database
-        if(!($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC ))){
-            echo json_encode("Username does not exist. Create Account.");
-            http_response_code(401); 
-            sqlsrv_free_stmt($stmt);
-            sqlsrv_close($db);
-            return False;
-        }
-
-        $program = $row[1];
-
-
-        echo json_encode($program);
+        echo json_encode($stmt);
         http_response_code(200);
     }
     
