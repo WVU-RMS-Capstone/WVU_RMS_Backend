@@ -39,6 +39,17 @@
     function fetchPremadePrograms() {
         $database = new database();
         $db = $database->getConnection();
+        
+        $tsql = "SELECT ProgramName FROM [dbo].[Programs]";
+        $stmt = sqlsrv_query($db, $tsql);
+        if( $stmt === false ){  
+            echo "Something went wrong fetching the exercises"; 
+            http_response_code(500); 
+            exit( print_r( sqlsrv_errors(), true));  
+        }
+
+        echo json_encode($stmt);
+        http_response_code(200);
     }
     
     /*
