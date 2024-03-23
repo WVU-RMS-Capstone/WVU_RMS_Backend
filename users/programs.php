@@ -43,12 +43,23 @@
         $tsql = "SELECT ProgramName FROM [dbo].[Programs]";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
-            echo "Something went wrong fetching the exercises"; 
-            http_response_code(500); 
+            echo "Error in statement preparation/execution.\n";  
             exit( print_r( sqlsrv_errors(), true));  
         }
+        // echo "hello there";
+        // Check to see if the user is stored and created within the database
+        if(!($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC ))){
+            echo json_encode("Username does not exist. Create Account.");
+            http_response_code(401); 
+            sqlsrv_free_stmt($stmt);
+            sqlsrv_close($db);
+            return False;
+        }
 
-        echo json_encode($stmt);
+        $program = $row[1];
+
+
+        echo json_encode($program);
         http_response_code(200);
     }
     
