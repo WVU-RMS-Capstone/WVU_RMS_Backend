@@ -13,8 +13,11 @@
         } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchpremadeprograms') {
             fetchPremadePrograms();
         }
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchallexercises') {
-            fetchAllExercises();
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'createprogram') {
+            createProgram();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addprogramexercises') {
+            addProgramExercises();
         }
         else {
             echo "Specified action not available.";
@@ -131,7 +134,6 @@
         // $workout_id = $_GET['workoutID'];
         $cover = $_GET['Cover'];
         $program_name = $_GET['ProgramName'];
-        $exercise = $_GET['Exercise'];
 
         $check = "SELECT programID FROM [dbo].[Programs] WHERE ProgramName = '$program_name'";
         $res = sqlsrv_query($db, $check);
@@ -145,7 +147,44 @@
             return False;
         }
 
-        $sql = "INSERT INTO [dbo].[Programs] (Cover, ProgramName, Exercise) VALUES ('$cover', '$program_name', '$exercise')";
+        $sql = "INSERT INTO [dbo].[Programs] (Cover, ProgramName) VALUES ('$cover', '$program_name')";
+        $stmt = sqlsrv_query($db, $sql);
+        if($stmt === False){  
+            // echo "Error in statement preparation/execution.\n";  
+            exit( print_r( sqlsrv_errors(), True));  
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
+        }
+        echo json_encode(True);
+        return true;
+    }
+
+    /*
+    Description: NOT FINISHED (need to figure out how to pull from exercise table to then store as comma seperated list inside program table)
+
+    Return: True stating the exercise was added (200), False if something went wrong (500), or the ID of a 
+    duplicate exercise which already exists (409) 
+
+    Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createxercise&Video=https://words.com&Cover=img.img&Name=rdl&Description=one-legged-deadlifts&Sets=3&Reps=10&BodyPart=knee
+    */
+    function addProgramExercises() {
+        $database = new database();
+        $db = $database->getConnection();
+
+        // id is auto-incremented
+        $workout_1 = $_GET['Workout1'];
+        $workout_2 = $_GET['Workout2'];
+        $workout_3 = $_GET['Workout3'];
+        $workout_4 = $_GET['Workout4'];
+        $workout_5 = $_GET['Workout5'];
+        $workout_6 = $_GET['Workout6'];
+        $workout_7 = $_GET['Workout7'];
+        $workout_8 = $_GET['Workout8'];
+        $workout_9 = $_GET['Workout9'];
+        $workout_10 = $_GET['Workout10'];
+
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout1, Workout2, Workout3, Workout4, Workout5 Workout6, Workout7, Workout8, Workout9, Workout10) VALUES ('$workout_1', '$workout_2', '$workout_4', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             // echo "Error in statement preparation/execution.\n";  
