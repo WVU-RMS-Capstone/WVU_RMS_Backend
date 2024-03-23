@@ -187,7 +187,7 @@
         $workout_9 = $_GET['Workout9'];
         $workout_10 = $_GET['Workout10'];
 
-        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout1, Workout2, Workout3, Workout4, Workout5, Workout6, Workout7, Workout8, Workout9, Workout10) VALUES ('$workout_1', '$workout_2', '$workout_4', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10) VALUES ('$workout_1', '$workout_2', '$workout_4', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             // echo "Error in statement preparation/execution.\n";  
