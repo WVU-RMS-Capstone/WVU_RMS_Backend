@@ -16,6 +16,8 @@ if (strpos($_SERVER['REQUEST_URI'], '/users/programs.php') !== False) {
         createProgram();
     } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchallexercises') {
         fetchAllExercises();
+    } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'fetchexercise') {
+        fetchExercise();
     } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addprogramexercises') {
         addProgramExercises();
     } else {
@@ -58,6 +60,36 @@ function fetchPremadePrograms()
 
     echo json_encode($rows);
     http_response_code(200);
+}
+
+/*
+Description:
+
+Return: Full details of the exercise given by the exerciseID url parameter
+*/
+function fetchExercise() {
+    $database = new database();
+    $db = $database->getConnection();
+
+    $exerciseID = $_GET['exerciseID'];
+    
+    $check = "SELECT * FROM [dbo].[Exercises] WHERE exerciseID = '$exerciseID'";
+    $res = sqlsrv_query($db, $check);
+    $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+    if( $r !== NULL ){
+        echo json_encode($r[0]);
+        http_response_code(200); 
+        sqlsrv_free_stmt($res);
+        sqlsrv_close($db);
+        return True;
+    }
+    
+    // The requested exercise doesn't exist
+    echo "The requested exercise doesn't exist."
+    http_response_code(409); 
+    sqlsrv_free_stmt($res);
+    sqlsrv_close($db);
+    return False;
 }
 
 /*
