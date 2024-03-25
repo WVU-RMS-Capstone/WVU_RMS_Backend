@@ -42,6 +42,12 @@
         
         $tsql = "SELECT ProgramName FROM [dbo].[Programs]";
         $stmt = sqlsrv_query($db, $tsql);
+
+        if( $stmt === false ){  
+            echo "Something went wrong fetching the programs"; 
+            http_response_code(500); 
+            exit( print_r( sqlsrv_errors(), true));  
+        }
         
         $row = array();
         while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
