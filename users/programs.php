@@ -37,7 +37,7 @@ function fetchPremadePrograms()
     $database = new database();
     $db = $database->getConnection();
 
-    $tsql = "SELECT ProgramName, Cover FROM [dbo].[Programs]";
+    $tsql = "SELECT ProgramID, ProgramName, Cover FROM [dbo].[Programs]";
     $stmt = sqlsrv_query($db, $tsql);
     if ($stmt === false) {
         echo "Something went wrong fetching the programs";
