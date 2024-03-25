@@ -42,13 +42,22 @@
         
         $tsql = "SELECT ProgramName FROM [dbo].[Programs]";
         $stmt = sqlsrv_query($db, $tsql);
-        if( $stmt === false ){  
-            echo "Error in statement preparation/execution.\n";  
-            exit( print_r( sqlsrv_errors(), true));  
+        
+        $row = array();
+        while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
+            $row[] = array('data' => $r);
         }
-        echo json_encode($stmt);
-        http_response_code(200);
-    }
+
+        // free resources
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($db);
+
+        // print roster to the site
+        echo json_encode($row);
+        http_response_code(200);  
+            
+        // return the roster
+        return $row;
     
     /*
     Description: 
