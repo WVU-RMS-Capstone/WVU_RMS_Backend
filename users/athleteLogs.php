@@ -2,9 +2,7 @@
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: GET, POST");
-    include '../config.php';
-    // if we are not requesting to this server
-    
+    include '../config.php';    
     
     if (strpos($_SERVER['REQUEST_URI'], '/users/athleteLogs.php') !== False) {
         $database = new database();
