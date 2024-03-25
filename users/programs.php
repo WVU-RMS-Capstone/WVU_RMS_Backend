@@ -254,3 +254,4 @@ function addProgramExercises()
     echo json_encode(True);
     return true;
 }
+?>
