@@ -81,7 +81,7 @@
         
         $check = "SELECT * FROM [dbo].[Exercises] WHERE exerciseID = '$exerciseID'";
         $res = sqlsrv_query($db, $check);
-        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
         if( $r !== NULL ){
             echo json_encode($r[0]);
             http_response_code(200); 
@@ -93,7 +93,6 @@
         // The requested exercise doesn't exist
         echo "The requested exercise doesn't exist.";
         http_response_code(409);
-        http_response_code(409); 
         sqlsrv_free_stmt($res);
         sqlsrv_close($db);
         return False;
