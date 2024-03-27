@@ -184,7 +184,7 @@
         $last_name = $_GET['lastName'];
         $userUID = $_GET['UID'];
         $email = $_GET['email'];
-        $athleteImage = $_GET['athleteImage']
+        $athleteImage = $_GET['athleteImage'];
 
         $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$athleteImage' WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $sql);
