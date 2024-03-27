@@ -186,7 +186,7 @@
         $email = $_GET['email'];
         $athleteImage = $_GET['athleteImage']
 
-        $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$athleteImage' WHERE UID = '$userUID'"
+        $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$athleteImage' WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $sql);
         if($stmt === False){  
             echo "Error in statement preparation/execution.\n";  
