@@ -16,6 +16,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'createaccount') {
             createAccount();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getuserinfo') {
+            getUserInfo();
+        }
         else{
             echo "Specified action not available.";
             http_response_code(201);
@@ -130,6 +133,74 @@
             http_response_code(401); 
             return False;
         }
+    }
+
+     /*
+    Description: 
+
+    Return: 
+
+    Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=login&UID=0000000000000000000000000000&email=test@
+    */
+    function getUserInfo(){
+        // new conect
+        $database = new database();
+        $db = $database->getConnection();
+
+        $userUID = $_GET['UID'];
+
+        $tsql = "SELECT firstName, lastName, Email, Role, AthleteImage FROM [dbo].[Users] WHERE UID = '$userUID'";
+        $stmt = sqlsrv_query($db, $tsql);
+        if( $stmt === false ){  
+            echo "Error in statement preparation/execution.\n";  
+            exit( print_r( sqlsrv_errors(), true));  
+        }
+        $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC );
+        // Check to see if the user is stored and created within the database
+        if(!($row)){
+            echo json_encode("Username does not exist. Create Account.");
+            http_response_code(401); 
+            sqlsrv_free_stmt($stmt);
+            sqlsrv_close($db);
+            return False;
+        }
+        echo json_encode($row);
+        http_response_code(200);
+    }
+
+     /*
+    Description: 
+
+    Return: 
+
+    Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=login&UID=0000000000000000000000000000&email=test@
+    */
+    function updateUser(){
+        // new conect
+        $database = new database();
+        $db = $database->getConnection();
+
+        $first_name = $_GET['firstName'];
+        $last_name = $_GET['lastName'];
+        $userUID = $_GET['UID'];
+        $email = $_GET['email'];
+        $athleteImage = $_GET['athleteImage']
+
+        $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$athleteImage' WHERE UID = '$userUID'"
+        $stmt = sqlsrv_query($db, $sql);
+        if($stmt === False){  
+            echo "Error in statement preparation/execution.\n";  
+            exit( print_r( sqlsrv_errors(), True));  
+            echo json_encode(False);
+            return False;
+        }
+
+        // Free resources
+        sqlsrv_free_stmt($stmt);
+        sqlsrv_close($db);
+        echo json_encode(True);
+        http_response_code(200);
+        return True;
     }
 ?>
 
