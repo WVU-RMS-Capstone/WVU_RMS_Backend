@@ -83,7 +83,7 @@
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
         if( $r !== NULL ){
-            echo json_encode($r[0]);
+            echo json_encode($r);
             http_response_code(200); 
             sqlsrv_free_stmt($res);
             sqlsrv_close($db);
