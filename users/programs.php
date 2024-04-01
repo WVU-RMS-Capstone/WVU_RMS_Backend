@@ -343,7 +343,7 @@
             $rows[] = array('data' => $row);
         }
         if ($i == 0) {
-            $rows = "No athletes have been added yet.";
+            $rows = "Not Assigned Program";
         }
         echo json_encode($rows);
         http_response_code(200);
