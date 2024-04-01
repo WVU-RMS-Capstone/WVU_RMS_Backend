@@ -77,24 +77,27 @@
         $database = new database();
         $db = $database->getConnection();
 
-        $check = "SELECT FirstName, LastName FROM [dbo].[Users] WHERE Role = 'Athlete'";
+        $check = "SELECT FirstName, LastName, UID FROM [dbo].[Users] WHERE Role = 'Athlete'";
         $stmt = sqlsrv_query($db, $check);
-
-        $row = array();
-        while($r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC)){
-            $row[] = array('data' => $r);
+        if ($stmt === false) {
+            echo "Something went wrong fetching the programs";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
         }
 
-        // free resources
-        sqlsrv_free_stmt($stmt);
-        sqlsrv_close($db);
+        $rows = array();
+        $i = 0;
 
-        // print roster to the site
-        echo json_encode($row);
-        http_response_code(200);  
-            
-        // return the roster
-        return $row;
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
+        }
+        if ($i == 0) {
+            $rows = "No athletes have been added yet.";
+        }
+
+        echo json_encode($rows);
+        http_response_code(200);
     }
 
      /*
