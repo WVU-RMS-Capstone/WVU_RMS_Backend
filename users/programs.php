@@ -26,6 +26,12 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addprogramexercises') {
             addProgramExercises();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addathleteprograms') {
+            addAthletePrograms();
+        } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getathleteprogram') {
+            getAthleteProgram();
+        } 
         else {
             echo "Specified action not available.";
             http_response_code(201);
