@@ -283,6 +283,7 @@
 
         // Check if username exists
         $check = "SELECT UID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        echo json_encode("hello");
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
 
