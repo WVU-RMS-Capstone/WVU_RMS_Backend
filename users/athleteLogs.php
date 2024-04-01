@@ -77,7 +77,7 @@
         $database = new database();
         $db = $database->getConnection();
 
-        $check = "SELECT FirstName, LastName, UID, Cover FROM [dbo].[Users] WHERE Role = 'Athlete'";
+        $check = "SELECT FirstName, LastName, UID, AthleteImage FROM [dbo].[Users] WHERE Role = 'Athlete'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the programs";
