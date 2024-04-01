@@ -224,12 +224,11 @@
     }
 
     /*
-        Description: NOT FINISHED (need to figure out how to pull from exercise table to then store as comma seperated list inside program table)
+        Description:
 
-        Return: True stating the exercise was added (200), False if something went wrong (500), or the ID of a 
-        duplicate exercise which already exists (409) 
+        Return: 
 
-        Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createxercise&Video=https://words.com&Cover=img.img&Name=rdl&Description=one-legged-deadlifts&Sets=3&Reps=10&BodyPart=knee
+        Example: 
         */
     function addProgramExercises()
     {
@@ -259,5 +258,89 @@
         }
         echo json_encode(True);
         return true;
+    }
+
+     /*
+        Description: 
+
+        Return: 
+        Example: 
+        */
+    function addAthletePrograms()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+    
+        // id is auto-incremented
+        $ProgramID = $_GET['ProgramID'];
+        $AthleteUID = $_GET['AthleteUID'];
+
+        // Check if username exists
+        $check = "SELECT UID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $res = sqlsrv_query($db, $check);
+        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+
+        if( $r !== NULL ){
+            // UPDATE TABLE
+            $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID' WHERE AthleteUID = '$AthleteUID'";
+            $stmt = sqlsrv_query($db, $sql);
+            if ($stmt === False) {
+                // echo "Error in statement preparation/execution.\n";  
+                exit(print_r(sqlsrv_errors(), True));
+                echo json_encode(False);
+                http_response_code(500);
+                return False;
+            }
+            echo json_encode(True);
+            return true;
+        } else {
+    
+            $sql = "INSERT INTO [dbo].[Assigned_Programs] (ProgramID, AthleteUID) VALUES ('$ProgramID', '$AthleteUID')";
+            $stmt = sqlsrv_query($db, $sql);
+            if ($stmt === False) {
+                // echo "Error in statement preparation/execution.\n";  
+                exit(print_r(sqlsrv_errors(), True));
+                echo json_encode(False);
+                http_response_code(500);
+                return False;
+            }
+            echo json_encode(True);
+            return true;
+        }
+    }
+
+     /*
+        Description: 
+
+        Return: 
+
+        Example: 
+    */
+    function getAthleteProgram()
+    {
+        $database = new database();
+        $db = $database->getConnection(); 
+
+        $check = "SELECT AthleteUID, ProgramID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $stmt = sqlsrv_query($db, $tsql);
+        if ($stmt === false) {
+            echo "Something went wrong fetching the exercises";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
+        }
+
+        $rows = array();
+        $i = 0;
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
+        }
+        if ($i == 0) {
+            $rows = "No athletes have been added yet.";
+        }
+        echo json_encode($rows);
+        http_response_code(200);
+            
     }
 ?>
