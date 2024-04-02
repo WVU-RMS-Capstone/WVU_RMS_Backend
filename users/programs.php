@@ -331,14 +331,15 @@
         
         $AthleteUID = $_GET['AthleteUID'];
 
-        $check = "SELECT AthleteUID, ProgramID, ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $check = "SELECT ap.AthleteUID, ap.ProgramID, p.ProgramID, p.ProgramName FROM [dbo].[Assigned_Programs] AS ap INNER JOIN [dbo].[Programs] AS p ON ap.ProgramID = p.ProgramID WHERE ap.AthleteUID = '$AthleteUID'";
+
+        // $check = "SELECT AthleteUID, ProgramID, ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
             http_response_code(500);
             exit(print_r(sqlsrv_errors(), true));
         }
-
         $rows = array();
         $i = 0;
 
@@ -349,6 +350,26 @@
         if ($i == 0) {
             $rows = "Not Assigned Program";
         }
+
+        // $ProgramID = rows[1];
+        // $program = "SELECT ProgramID, ProgramName FROM [dbo].[Programs] WHERE ProgramID = '$ProgramID'";
+        // $stmt = sqlsrv_query($db, $check);
+        // if ($stmt === false) {
+        //     echo "Something went wrong fetching the exercises";
+        //     http_response_code(500);
+        //     exit(print_r(sqlsrv_errors(), true));
+        // }
+        // $rows = array();
+        // $i = 0;
+
+        // while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        //     $i++;
+        //     $rows[] = array('data' => $row);
+        // }
+        // if ($i == 0) {
+        //     $rows = "Not Assigned Program";
+        // }
+
         echo json_encode($rows);
         http_response_code(200);
             
