@@ -285,6 +285,8 @@
         $check = "SELECT UID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        
+        echo "At if statement";
 
         if( $r !== NULL ){
             // UPDATE TABLE
@@ -297,7 +299,7 @@
                 http_response_code(500);
                 return False;
             }
-            echo "true";
+            echo "json_encode(True)";
             http_response_code(200);
             return true;
         } else {
@@ -312,7 +314,7 @@
                 http_response_code(500);
                 return False;
             }
-            echo "true";
+            echo json_encode(True);
             http_response_code(200);
             return true;
         }
