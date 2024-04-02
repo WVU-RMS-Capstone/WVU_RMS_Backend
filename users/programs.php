@@ -280,6 +280,8 @@
         // id is auto-incremented
         $ProgramID = $_GET['ProgramID'];
         $AthleteUID = $_GET['AthleteUID'];
+        
+        echo "Before check";
 
         // Check if username exists
         $check = "SELECT UID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
@@ -299,7 +301,7 @@
                 http_response_code(500);
                 return False;
             }
-            echo "json_encode(True)";
+            echo json_encode(True);
             http_response_code(200);
             return true;
         } else {
