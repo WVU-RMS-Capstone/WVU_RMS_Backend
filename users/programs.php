@@ -371,7 +371,7 @@
         
         $ProgramID = $_GET['ProgramID'];
 
-        $check = "SELECT ProgramName, Cover, ProgramID WHERE ProgramID = '$ProgramID'";
+        $check = "SELECT ProgramName, Cover, ProgramID FROM [dbo].[Programs] WHERE ProgramID = '$ProgramID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
