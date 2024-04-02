@@ -292,7 +292,7 @@
             $stmt = sqlsrv_query($db, $sql);
             if ($stmt === False) {
                 // echo "Error in statement preparation/execution.\n";  
-                exit(print_r(sqlsrv_errors(), True));
+                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
@@ -307,7 +307,7 @@
             echo json_encode("after query");
             if ($stmt === False) {
                 // echo "Error in statement preparation/execution.\n";  
-                exit(print_r(sqlsrv_errors(), True));
+                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
