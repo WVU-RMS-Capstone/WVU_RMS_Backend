@@ -332,7 +332,7 @@
         $AthleteUID = $_GET['AthleteUID'];
 
         $check = "SELECT AthleteUID, ProgramID, ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
-        $stmt = sqlsrv_query($db, $tsql);
+        $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
             http_response_code(500);
