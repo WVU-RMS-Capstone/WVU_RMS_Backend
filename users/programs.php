@@ -297,7 +297,7 @@
                 http_response_code(500);
                 return False;
             }
-            echo json_encode(True);
+            echo "true";
             http_response_code(200);
             return true;
         } else {
@@ -312,7 +312,7 @@
                 http_response_code(500);
                 return False;
             }
-            echo json_encode(True);
+            echo "true";
             http_response_code(200);
             return true;
         }
