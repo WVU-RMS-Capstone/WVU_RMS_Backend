@@ -284,7 +284,7 @@
     
             $ProgramID = $_GET['ProgramID'];
     
-            $sql = "SELECT * FROM [dbo].[Program_Exercises] WHERE Program_ID = '$ProgramID'";
+            $sql = "SELECT (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10) FROM [dbo].[Program_Exercises] WHERE Program_ID = '$ProgramID'";
             $res = sqlsrv_query($db, $sql);
             $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
             if ($r === NULL) {
@@ -292,6 +292,8 @@
                 http_response_code(409);
                 return False;
             }
+            
+            
             
             echo json_encode($r);
             http_response_code(200);
