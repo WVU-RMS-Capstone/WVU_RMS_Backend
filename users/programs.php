@@ -298,6 +298,7 @@
                 return False;
             }
             echo json_encode(True);
+            http_response_code(200);
             return true;
         } else {
             $sql = "INSERT INTO [dbo].[Assigned_Programs] (ProgramID, AthleteUID) VALUES ('$ProgramID', '$AthleteUID')";
@@ -312,6 +313,7 @@
                 return False;
             }
             echo json_encode(True);
+            http_response_code(200);
             return true;
         }
     }
