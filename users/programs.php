@@ -26,6 +26,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addprogramexercises') {
             addProgramExercises();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogramexercises') {
+            
+        }
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addathleteprograms') {
             addAthletePrograms();
         } 
@@ -268,6 +271,32 @@
         echo json_encode(True);
         return true;
     }
+    
+    /*
+        Description: Fetches the set of exercises that make up a given program
+
+        Return: 
+        */
+        function getProgramExercises()
+        {
+            $database = new database();
+            $db = $database->getConnection();
+    
+            $ProgramID = $_GET['ProgramID'];
+    
+            $sql = "SELECT * FROM [dbo].[Program_Exercises] WHERE Program_ID = '$ProgramID'";
+            $res = sqlsrv_query($db, $check);
+            $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
+            if ($r === NULL) {
+                echo json_encode(False);
+                http_response_code(409);
+                return False;
+            }
+            
+            echo json_encode($rows[0]);
+            http_response_code(200);
+            return True;
+        }
 
      /*
         Description: 
