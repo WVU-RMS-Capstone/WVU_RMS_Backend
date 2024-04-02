@@ -27,7 +27,7 @@
             addProgramExercises();
         } 
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogramexercises') {
-            
+            getProgramExercises();
         }
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addathleteprograms') {
             addAthletePrograms();
