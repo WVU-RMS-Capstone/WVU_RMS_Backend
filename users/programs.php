@@ -293,7 +293,7 @@
                 return False;
             }
             
-            echo json_encode($rows[0]);
+            echo json_encode($res);
             http_response_code(200);
             return True;
         }
