@@ -284,7 +284,7 @@
         echo "Before check";
 
         // Check if username exists
-        $check = "SELECT UID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $check = "SELECT ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
         
