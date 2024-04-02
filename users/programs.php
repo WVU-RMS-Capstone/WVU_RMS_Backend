@@ -32,6 +32,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getathleteprogram') {
             getAthleteProgram();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprograminfo') {
+            getProgramInfo();
+        } 
         else {
             echo "Specified action not available.";
             http_response_code(201);
@@ -332,8 +335,6 @@
         $AthleteUID = $_GET['AthleteUID'];
 
         $check = "SELECT ap.AthleteUID, ap.ProgramID, p.ProgramID, p.ProgramName FROM [dbo].[Assigned_Programs] AS ap INNER JOIN [dbo].[Programs] AS p ON ap.ProgramID = p.ProgramID WHERE ap.AthleteUID = '$AthleteUID'";
-
-        // $check = "SELECT AthleteUID, ProgramID, ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
@@ -351,24 +352,42 @@
             $rows = "Not Assigned Program";
         }
 
-        // $ProgramID = rows[1];
-        // $program = "SELECT ProgramID, ProgramName FROM [dbo].[Programs] WHERE ProgramID = '$ProgramID'";
-        // $stmt = sqlsrv_query($db, $check);
-        // if ($stmt === false) {
-        //     echo "Something went wrong fetching the exercises";
-        //     http_response_code(500);
-        //     exit(print_r(sqlsrv_errors(), true));
-        // }
-        // $rows = array();
-        // $i = 0;
+        echo json_encode($rows);
+        http_response_code(200);
+            
+    }
 
-        // while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        //     $i++;
-        //     $rows[] = array('data' => $row);
-        // }
-        // if ($i == 0) {
-        //     $rows = "Not Assigned Program";
-        // }
+     /*
+        Description: 
+
+        Return: 
+
+        Example: 
+    */
+    function getProgramInfo()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        $ProgramID = $_GET['ProgramID'];
+
+        $check = "SELECT ProgramName, Cover, ProgramID WHERE ProgramID = '$ProgramID'";
+        $stmt = sqlsrv_query($db, $check);
+        if ($stmt === false) {
+            echo "Something went wrong fetching the exercises";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
+        }
+        $rows = array();
+        $i = 0;
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
+        }
+        if ($i == 0) {
+            $rows = "Program Information";
+        }
 
         echo json_encode($rows);
         http_response_code(200);
