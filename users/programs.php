@@ -281,15 +281,11 @@
         $ProgramID = $_GET['ProgramID'];
         $AthleteUID = $_GET['AthleteUID'];
         
-        echo "Before check";
-
         // Check if username exists
         $check = "SELECT ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
         
-        echo "At if statement";
-
         if( $r !== NULL ){
             // UPDATE TABLE
             $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID' WHERE AthleteUID = '$AthleteUID'";
@@ -306,9 +302,8 @@
             return true;
         } else {
             $sql = "INSERT INTO [dbo].[Assigned_Programs] (ProgramID, AthleteUID) VALUES ('$ProgramID', '$AthleteUID')";
-            echo json_encode("before query");
             $stmt = sqlsrv_query($db, $sql);
-            echo json_encode("after query");
+            
             if ($stmt === False) {
                 // echo "Error in statement preparation/execution.\n";  
                 // exit(print_r(sqlsrv_errors(), True));
