@@ -285,7 +285,7 @@
             $ProgramID = $_GET['ProgramID'];
     
             $sql = "SELECT * FROM [dbo].[Program_Exercises] WHERE Program_ID = '$ProgramID'";
-            $res = sqlsrv_query($db, $check);
+            $res = sqlsrv_query($db, $sql);
             $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
             if ($r === NULL) {
                 echo json_encode(False);
