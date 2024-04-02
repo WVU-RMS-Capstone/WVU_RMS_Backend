@@ -328,7 +328,9 @@
     function getAthleteProgram()
     {
         $database = new database();
-        $db = $database->getConnection(); 
+        $db = $database->getConnection();
+        
+        $AthleteUID = $_GET['AthleteUID'];
 
         $check = "SELECT AthleteUID, ProgramID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $stmt = sqlsrv_query($db, $tsql);
