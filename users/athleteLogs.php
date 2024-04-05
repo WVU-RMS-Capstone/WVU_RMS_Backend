@@ -44,7 +44,7 @@
         $writtenBy = $_GET['MadeBy'];
         $athlete = $_GET['Athlete'];
 
-        $sql = "INSERT INTO [dbo].[Notes] (Date, Note, MadeBy, Athlete) VALUES ('$date', '$note', '$writtenBy', '$athlete',)";
+        $sql = "INSERT INTO [dbo].[Notes] (Date, Note, MadeBy, Athlete) VALUES ('$date', '$note', '$writtenBy', '$athlete')";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             echo json_encode(False);
