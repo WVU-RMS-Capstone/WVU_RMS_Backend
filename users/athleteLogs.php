@@ -41,7 +41,7 @@
         // id is auto-incremented
         $date = $_GET['Date'];
         $note = $_GET['Note'];
-        $writtenBy = $_GET['MadeBy'];
+        $writtenBy = $_GET['Madeby'];
         $athlete = $_GET['Athlete'];
 
         $sql = "INSERT INTO [dbo].[Notes] (Date, Note, MadeBy, Athlete) VALUES ('$date', '$note', '$writtenBy', '$athlete')";
