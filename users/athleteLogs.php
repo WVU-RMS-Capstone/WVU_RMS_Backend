@@ -8,7 +8,7 @@
         $database = new database();
         $db = $database->getConnection();
         
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addNotes') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'addnotes') {
             AddNotes();
         }
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getroster') {
@@ -16,6 +16,9 @@
         }
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getdailylogs') {
             getDailyLogs();
+        }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getnotes') {
+            getNotes();
         }
         else{
             echo "Specified action not available.";
@@ -38,31 +41,18 @@
         // id is auto-incremented
         $date = $_GET['Date'];
         $note = $_GET['Note'];
-        $writtenBy = $_GET['writtenBy'];
-        $athlete = $_GET['athlete'];
+        $writtenBy = $_GET['MadeBy'];
+        $athlete = $_GET['Athlete'];
 
-        $check = "SELECT noteID FROM [dbo].[Notes] WHERE athlete = '$athlete'";
-        $res = sqlsrv_query($db, $check);
-        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
-        if( $r !== NULL ){
-            // echo 'Exercise Already Exists.';
-            echo json_encode($r[0]);
-            http_response_code(409); 
-            sqlsrv_free_stmt($res);
-            sqlsrv_close($db);
-            return False;
-        }
-
-        $sql = "INSERT INTO [dbo].[Notes] (Date, Note, writtenBy, athlete) VALUES ('$date', '$note', '$writtenBy', '$athlete',)";
+        $sql = "INSERT INTO [dbo].[Notes] (Date, Note, MadeBy, Athlete) VALUES ('$date', '$note', '$writtenBy', '$athlete',)";
         $stmt = sqlsrv_query($db, $sql);
-        if($stmt === False){  
-            // echo "Error in statement preparation/execution.\n";  
-            exit( print_r( sqlsrv_errors(), True));  
+        if ($stmt === False) {
             echo json_encode(False);
             http_response_code(500);
             return False;
         }
         echo json_encode(True);
+        http_response_code(200);
         return true;
     }
 
@@ -144,5 +134,34 @@
             
         // return the role of the user
         return $athlete;
+    }
+
+    function getNotes() {
+        $database = new database();
+        $db = $database->getConnection();
+
+        $athlete = $_GET['Athlete'];
+
+        $sql = "SELECT Date, Note, MadeBy FROM [dbo].[Notes] WHERE Athlete = '$athlete'";
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === false) {
+            echo "Something went wrong fetching the notes";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
+        }
+
+        $rows = array();
+        $i = 0;
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
+        }
+        if ($i == 0) {
+            $rows = "No notes have been added yet.";
+        }
+
+        echo json_encode($rows);
+        http_response_code(200);
     }
 ?>
