@@ -19,6 +19,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getuserinfo') {
             getUserInfo();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateuser') {
+            updateUser();
+        }
         else{
             echo "Specified action not available.";
             http_response_code(201);
@@ -197,7 +200,6 @@
         sqlsrv_close($db);
         echo json_encode(True);
         http_response_code(200);
-        return True;
     }
 ?>
 
