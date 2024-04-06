@@ -457,7 +457,7 @@
 
         Example: 
     */
-    function deleteExercise()
+    function deletePrograms()
     {
         $database = new database();
         $db = $database->getConnection();
