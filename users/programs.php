@@ -501,7 +501,7 @@
         $db = $database->getConnection();
         
         // id is auto-incremented
-        $id = $_GET['exerciseID']
+        $id = $_GET['exerciseID'];
         $video = $_GET['Video'];
         $cover = $_GET['Cover'];
         $name = $_GET['Name'];
@@ -536,7 +536,7 @@
         $db = $database->getConnection();
         
         // id is auto-incremented
-        $id = $_GET['exerciseID']
+        $id = $_GET['exerciseID'];
         $video = $_GET['Video'];
         $cover = $_GET['Cover'];
         $name = $_GET['Name'];
