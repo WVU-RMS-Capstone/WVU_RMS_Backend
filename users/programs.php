@@ -38,6 +38,18 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprograminfo') {
             getProgramInfo();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateexercise') {
+            updateExercise();
+        } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'deleteexercise') {
+            deleteExercise();
+        } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'deleteprograms') {
+            deletePrograms();
+        } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogram') {
+            updatePrograms();
+        } 
         else {
             echo "Specified action not available.";
             http_response_code(201);
@@ -475,5 +487,75 @@
         echo json_encode(True);
         http_response_code(200);
             
+    }
+
+    /*
+    Description: 
+
+    Return: 
+    Example: 
+    */
+    function updateExercise()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        // id is auto-incremented
+        $id = $_GET['exerciseID']
+        $video = $_GET['Video'];
+        $cover = $_GET['Cover'];
+        $name = $_GET['Name'];
+        $description = $_GET['Description'];
+        $sets = $_GET['Sets'];
+        $reps = $_GET['Reps'];
+        $body_part = strtoupper($_GET['BodyPart']);
+            
+        $sql = "UPDATE [dbo].[Exercises] SET Video = '$video', Cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part WHERE exerciseID = '$exerciseID'";
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === False) {
+            // echo "Error in statement preparation/execution.\n";  
+            // exit(print_r(sqlsrv_errors(), True));
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
+        }
+        echo json_encode(True);
+        http_response_code(200);
+        return true;
+    }
+
+    /*
+    Description: 
+
+    Return: 
+    Example: 
+    */
+    function updatePrograms()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        // id is auto-incremented
+        $id = $_GET['exerciseID']
+        $video = $_GET['Video'];
+        $cover = $_GET['Cover'];
+        $name = $_GET['Name'];
+        $description = $_GET['Description'];
+        $sets = $_GET['Sets'];
+        $reps = $_GET['Reps'];
+        $body_part = strtoupper($_GET['BodyPart']);
+            
+        $sql = "UPDATE [dbo].[Exercises] SET Video = '$video', Cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part WHERE exerciseID = '$exerciseID'";
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === False) {
+            // echo "Error in statement preparation/execution.\n";  
+            // exit(print_r(sqlsrv_errors(), True));
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
+        }
+        echo json_encode(True);
+        http_response_code(200);
+        return true;
     }
 ?>
