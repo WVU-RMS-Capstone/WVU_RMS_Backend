@@ -486,7 +486,7 @@
             http_response_code(500);
             exit(print_r(sqlsrv_errors(), true));
         } else {
-            $deleteExercises = "DELETE FROM [dbo].[Programs_Exercise] WHERE Program_ID = '$programID'";
+            $deleteExercises = "DELETE FROM [dbo].[Program_Exercise] WHERE Program_ID = '$programID'";
             $st = sqlsrv_query($db, $deleteExercises);
             if ($st === False) {
                 // echo "Error in statement preparation/execution.\n";  
