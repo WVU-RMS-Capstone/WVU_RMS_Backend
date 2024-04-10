@@ -456,6 +456,7 @@
             // exit(print_r(sqlsrv_errors(), True));
             echo json_encode(False);
             http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
         }
         echo json_encode(True);
         http_response_code(200);
@@ -483,6 +484,7 @@
             // exit(print_r(sqlsrv_errors(), True));
             echo json_encode(False);
             http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
         }
         echo json_encode(True);
         http_response_code(200);
