@@ -155,8 +155,6 @@
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             $i++;
-            $date = new DateTime($row['Date']);
-            $row['Date'] = $date->format('Y-m-d');
             $rows[] = array('data' => $row);
         }
         if ($i == 0) {
