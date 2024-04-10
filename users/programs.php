@@ -522,7 +522,7 @@
         $reps = $_GET['Reps'];
         $body_part = strtoupper($_GET['BodyPart']);
             
-        $sql = "UPDATE [dbo].[Exercises] SET video = '$video', cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part' WHERE exerciseID = '$exerciseID'";
+        $sql = "UPDATE [dbo].[Exercises] SET video = '$video', cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part' WHERE exerciseID = '$id'";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
