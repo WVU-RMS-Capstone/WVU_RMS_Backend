@@ -412,7 +412,7 @@
         
         $ProgramID = $_GET['ProgramID'];
 
-        $check = "SELECT ProgramName, Cover, ProgramID FROM [dbo].[Programs] WHERE ProgramID = '$ProgramID'";
+        $check = "SELECT p.ProgramName, p.Cover, p.ProgramID, pe.Workout_1, pe.Workout_2, pe.Workout_3, pe.Workout_4, pe.Workout_5, pe.Workout_6, pe.Workout_7, pe.Workout_8, pe.Workout_9, pe.Workout_10 FROM [dbo].[Programs] AS p INNER JOIN [dbo].[Program_Exercises] AS pe ON p.ProgramID = pe.Program_ID WHERE p.ProgramID = '$ProgramID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
