@@ -142,7 +142,7 @@
 
         $athlete = $_GET['Athlete'];
 
-        $sql = "SELECT DATE_FORMAT(Date, '%Y-%m-%d'), Note, MadeBy FROM [dbo].[Notes] WHERE Athlete = '$athlete' ORDER BY Date ASC";
+        $sql = "SELECT Date, Note, MadeBy FROM [dbo].[Notes] WHERE Athlete = '$athlete' ORDER BY Date ASC";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === false) {
             echo "Something went wrong fetching the notes";
