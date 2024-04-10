@@ -436,7 +436,7 @@
                 LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID
                 LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID
                 WHERE p.ProgramID = '$programID'";
-                
+
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
@@ -446,9 +446,9 @@
 
         $r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
         if ($r === NULL) {
-                echo json_encode(False);
-                http_response_code(409);
-                return False;
+            echo "Something went wrong fetching the exercises";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
         }
 
         echo json_encode($r);
