@@ -419,19 +419,17 @@
             http_response_code(500);
             exit(print_r(sqlsrv_errors(), true));
         }
-        $rows = array();
-        $i = 0;
 
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-            $i++;
-            $rows[] = array('data' => $row);
-        }
-        if ($i == 0) {
-            $rows = "Program Information";
+        $r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        if ($r === NULL) {
+                echo json_encode(False);
+                http_response_code(409);
+                return False;
         }
 
-        echo json_encode($rows);
+        echo json_encode($r);
         http_response_code(200);
+        return True;
             
     }
 
