@@ -412,7 +412,7 @@
         
         $ProgramID = $_GET['ProgramID'];
 
-        $check = "SELECT p.Cover, p.ProgramName, e1.Name AS workout1, e2.Name AS workout2, e3.Name AS workout3, e4.Name AS workout4, e5.Name AS workout5, e6.Name AS workout6, e7.Name AS workout7, e8.Name AS workout8, e9.Name AS workout9, e10.Name AS workout10 FROM [dbo].[Programs] p JOIN [dbo].[Program_Exercises] pe ON p.ProgramID = pe.Program_ID LEFT JOIN [dbo].[Exercises] e1 ON pe.Workout_1 = e1.exerciseID LEFT JOIN [dbo].[Exercises] e2 ON pe.Workout_2 = e2.exerciseID LEFT JOIN [dbo].[Exercises] e3 ON pe.Workout_3 = e3.exerciseID LEFT JOIN [dbo].[Exercises] e4 ON pe.Workout_4 = e4.exerciseID LEFT JOIN [dbo].[Exercises] e5 ON pe.Workout_5 = e5.exerciseID LEFT JOIN [dbo].[Exercises] e6 ON pe.Workout_6 = e6.exerciseID LEFT JOIN [dbo].[Exercises] e7 ON pe.Workout_7 = e7.exerciseID LEFT JOIN [dbo].[Exercises] e8 ON pe.Workout_8 = e8.exerciseID LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID WHERE p.ProgramID = '$programID'";
+        $check = "SELECT p.Cover, p.ProgramName, e1.Name AS workout1, e2.Name AS workout2, e3.Name AS workout3, e4.Name AS workout4, e5.Name AS workout5, e6.Name AS workout6, e7.Name AS workout7, e8.Name AS workout8, e9.Name AS workout9, e10.Name AS workout10 FROM [dbo].[Programs] p JOIN [dbo].[Program_Exercises] pe ON p.ProgramID = pe.Program_ID LEFT JOIN [dbo].[Exercises] e1 ON pe.Workout_1 = e1.exerciseID LEFT JOIN [dbo].[Exercises] e2 ON pe.Workout_2 = e2.exerciseID LEFT JOIN [dbo].[Exercises] e3 ON pe.Workout_3 = e3.exerciseID LEFT JOIN [dbo].[Exercises] e4 ON pe.Workout_4 = e4.exerciseID LEFT JOIN [dbo].[Exercises] e5 ON pe.Workout_5 = e5.exerciseID LEFT JOIN [dbo].[Exercises] e6 ON pe.Workout_6 = e6.exerciseID LEFT JOIN [dbo].[Exercises] e7 ON pe.Workout_7 = e7.exerciseID LEFT JOIN [dbo].[Exercises] e8 ON pe.Workout_8 = e8.exerciseID LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID WHERE p.ProgramID = '$ProgramID'";
 
         $stmt = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
@@ -425,7 +425,7 @@
         }
         
         // The requested exercise doesn't exist
-        echo "The requested exercise doesn't exist.";
+        echo "The requested program doesn't exist.";
         http_response_code(409);
         sqlsrv_free_stmt($res);
         sqlsrv_close($db);
