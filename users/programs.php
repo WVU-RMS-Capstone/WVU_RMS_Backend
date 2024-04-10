@@ -477,7 +477,7 @@
         
         $programID = $_GET['programID'];
 
-        $check = "DELETE p, pe FROM [dbo].[Programs] p INNER JOIN [dbo].[Program_Exercises] pe ON p.ProgramID = pe.Program_ID WHERE p.ProgramID = '$programID'";
+        $check = "DELETE FROM [dbo].[Programs] WHERE ProgramID = '$programID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
@@ -485,6 +485,16 @@
             echo json_encode(False);
             http_response_code(500);
             exit(print_r(sqlsrv_errors(), true));
+        } else {
+            $deleteExercises = "DELETE FROM [dbo].[Programs_Exercise] WHERE Program_ID = '$programID'";
+            $st = sqlsrv_query($db, $deleteExercises);
+            if ($st === False) {
+                // echo "Error in statement preparation/execution.\n";  
+                // exit(print_r(sqlsrv_errors(), True));
+                echo json_encode(False);
+                http_response_code(500);
+                exit(print_r(sqlsrv_errors(), true));
+            }
         }
         echo json_encode(True);
         http_response_code(200);
