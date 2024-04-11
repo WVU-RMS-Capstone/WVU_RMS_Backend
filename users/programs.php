@@ -38,18 +38,6 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprograminfo') {
             getProgramInfo();
         } 
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateexercise') {
-            updateExercise();
-        } 
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'deleteexercise') {
-            deleteExercise();
-        } 
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'deleteprograms') {
-            deletePrograms();
-        } 
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogram') {
-            updatePrograms();
-        } 
         else {
             echo "Specified action not available.";
             http_response_code(201);
@@ -270,15 +258,8 @@
         $workout_8 = $_GET['Workout8'];
         $workout_9 = $_GET['Workout9'];
         $workout_10 = $_GET['Workout10'];
-        $workout_count = 0;
-        
-        // Get count of exercises
-        for ($i = 0; i <= 10; i++) {
-            if (i === 0) break;
-            $workout_count = $i;
-        }
 
-        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10, Workout_Count) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$workout_count)";
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
@@ -331,17 +312,19 @@
         // id is auto-incremented
         $ProgramID = $_GET['ProgramID'];
         $AthleteUID = $_GET['AthleteUID'];
-
+        
         // Check if username exists
-        $check = "SELECT ID, Workout_Count FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $check = "SELECT ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $res = sqlsrv_query($db, $check);
-        $r = sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
-
-        if($r !== NULL){
+        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
+        
+        if( $r !== NULL ){
             // UPDATE TABLE
-            $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID', TotalExercises = '{$r['Workout_Count']}' WHERE AthleteUID = '$AthleteUID'";
+            $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID' WHERE AthleteUID = '$AthleteUID'";
             $stmt = sqlsrv_query($db, $sql);
             if ($stmt === False) {
+                // echo "Error in statement preparation/execution.\n";  
+                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
@@ -352,8 +335,10 @@
         } else {
             $sql = "INSERT INTO [dbo].[Assigned_Programs] (ProgramID, AthleteUID) VALUES ('$ProgramID', '$AthleteUID')";
             $stmt = sqlsrv_query($db, $sql);
-
+            
             if ($stmt === False) {
+                // echo "Error in statement preparation/execution.\n";  
+                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
@@ -415,24 +400,26 @@
         
         $ProgramID = $_GET['ProgramID'];
 
-        $check = "SELECT p.Cover, p.ProgramName, e1.Name AS workout1, e2.Name AS workout2, e3.Name AS workout3, e4.Name AS workout4, e5.Name AS workout5, e6.Name AS workout6, e7.Name AS workout7, e8.Name AS workout8, e9.Name AS workout9, e10.Name AS workout10 FROM [dbo].[Programs] p JOIN [dbo].[Program_Exercises] pe ON p.ProgramID = pe.Program_ID LEFT JOIN [dbo].[Exercises] e1 ON pe.Workout_1 = e1.exerciseID LEFT JOIN [dbo].[Exercises] e2 ON pe.Workout_2 = e2.exerciseID LEFT JOIN [dbo].[Exercises] e3 ON pe.Workout_3 = e3.exerciseID LEFT JOIN [dbo].[Exercises] e4 ON pe.Workout_4 = e4.exerciseID LEFT JOIN [dbo].[Exercises] e5 ON pe.Workout_5 = e5.exerciseID LEFT JOIN [dbo].[Exercises] e6 ON pe.Workout_6 = e6.exerciseID LEFT JOIN [dbo].[Exercises] e7 ON pe.Workout_7 = e7.exerciseID LEFT JOIN [dbo].[Exercises] e8 ON pe.Workout_8 = e8.exerciseID LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID WHERE p.ProgramID = '$ProgramID'";
-
+        $check = "SELECT ProgramName, Cover, ProgramID FROM [dbo].[Programs] WHERE ProgramID = '$ProgramID'";
         $stmt = sqlsrv_query($db, $check);
-        $r = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC );
-        if( $r !== NULL ){
-            echo json_encode($r);
-            http_response_code(200); 
-            sqlsrv_free_stmt($res);
-            sqlsrv_close($db);
-            return True;
+        if ($stmt === false) {
+            echo "Something went wrong fetching the exercises";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
         }
-        
-        // The requested exercise doesn't exist
-        echo "The requested program doesn't exist.";
-        http_response_code(409);
-        sqlsrv_free_stmt($res);
-        sqlsrv_close($db);
-        return False;
+        $rows = array();
+        $i = 0;
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $i++;
+            $rows[] = array('data' => $row);
+        }
+        if ($i == 0) {
+            $rows = "Program Information";
+        }
+
+        echo json_encode($rows);
+        http_response_code(200);
             
     }
 
@@ -457,7 +444,6 @@
             // exit(print_r(sqlsrv_errors(), True));
             echo json_encode(False);
             http_response_code(500);
-            exit(print_r(sqlsrv_errors(), true));
         }
         echo json_encode(True);
         http_response_code(200);
@@ -478,97 +464,16 @@
         
         $programID = $_GET['programID'];
 
-        $check = "DELETE FROM [dbo].[Programs] WHERE ProgramID = '$programID'";
+        $check = "DELETE p, pe FROM [dbo].[Programs] p INNER JOIN [dbo].[Program_Exercises] pe ON p.ProgramID = pe.Program_ID WHERE p.ProgramID = '$programID'";
         $stmt = sqlsrv_query($db, $check);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
             // exit(print_r(sqlsrv_errors(), True));
             echo json_encode(False);
             http_response_code(500);
-            exit(print_r(sqlsrv_errors(), true));
-        } else {
-            $deleteExercises = "DELETE FROM [dbo].[Program_Exercises] WHERE Program_ID = '$programID'";
-            $st = sqlsrv_query($db, $deleteExercises);
-            if ($st === False) {
-                // echo "Error in statement preparation/execution.\n";  
-                // exit(print_r(sqlsrv_errors(), True));
-                echo json_encode(False);
-                http_response_code(500);
-                exit(print_r(sqlsrv_errors(), true));
-            }
         }
         echo json_encode(True);
         http_response_code(200);
             
-    }
-
-    /*
-    Description: 
-
-    Return: 
-    Example: 
-    */
-    function updateExercise()
-    {
-        $database = new database();
-        $db = $database->getConnection();
-        
-        // id is auto-incremented
-        $id = $_GET['exerciseID'];
-        $video = $_GET['Video'];
-        $cover = $_GET['Cover'];
-        $name = $_GET['Name'];
-        $description = $_GET['Description'];
-        $sets = $_GET['Sets'];
-        $reps = $_GET['Reps'];
-        $body_part = strtoupper($_GET['BodyPart']);
-            
-        $sql = "UPDATE [dbo].[Exercises] SET video = '$video', cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part' WHERE exerciseID = '$id'";
-        $stmt = sqlsrv_query($db, $sql);
-        if ($stmt === False) {
-            // echo "Error in statement preparation/execution.\n";  
-            // exit(print_r(sqlsrv_errors(), True));
-            echo json_encode(False);
-            http_response_code(500);
-            return False;
-        }
-        echo json_encode(True);
-        http_response_code(200);
-        return true;
-    }
-
-    /*
-    Description: 
-
-    Return: 
-    Example: 
-    */
-    function updatePrograms()
-    {
-        $database = new database();
-        $db = $database->getConnection();
-        
-        // id is auto-incremented
-        $id = $_GET['exerciseID'];
-        $video = $_GET['Video'];
-        $cover = $_GET['Cover'];
-        $name = $_GET['Name'];
-        $description = $_GET['Description'];
-        $sets = $_GET['Sets'];
-        $reps = $_GET['Reps'];
-        $body_part = strtoupper($_GET['BodyPart']);
-            
-        $sql = "UPDATE [dbo].[Exercises] SET Video = '$video', Cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part WHERE exerciseID = '$exerciseID'";
-        $stmt = sqlsrv_query($db, $sql);
-        if ($stmt === False) {
-            // echo "Error in statement preparation/execution.\n";  
-            // exit(print_r(sqlsrv_errors(), True));
-            echo json_encode(False);
-            http_response_code(500);
-            return False;
-        }
-        echo json_encode(True);
-        http_response_code(200);
-        return true;
     }
 ?>
