@@ -270,8 +270,15 @@
         $workout_8 = $_GET['Workout8'];
         $workout_9 = $_GET['Workout9'];
         $workout_10 = $_GET['Workout10'];
+        $workout_count = 0;
+        
+        // Get count of exercises
+        for ($i = 0; i <= 10; i++) {
+            if (i === 0) break;
+            $workout_count = $i;
+        }
 
-        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10, Workout_Count) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$workout_count)";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
@@ -324,19 +331,17 @@
         // id is auto-incremented
         $ProgramID = $_GET['ProgramID'];
         $AthleteUID = $_GET['AthleteUID'];
-        
+
         // Check if username exists
-        $check = "SELECT ID FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
+        $check = "SELECT ID, Workout_Count FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteUID'";
         $res = sqlsrv_query($db, $check);
-        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
-        
-        if( $r !== NULL ){
+        $r = sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
+
+        if($r !== NULL){
             // UPDATE TABLE
-            $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID' WHERE AthleteUID = '$AthleteUID'";
+            $sql = "UPDATE [dbo].[Assigned_Programs] SET ProgramID = '$ProgramID', TotalExercises = '{$r['Workout_Count']}' WHERE AthleteUID = '$AthleteUID'";
             $stmt = sqlsrv_query($db, $sql);
             if ($stmt === False) {
-                // echo "Error in statement preparation/execution.\n";  
-                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
@@ -347,10 +352,8 @@
         } else {
             $sql = "INSERT INTO [dbo].[Assigned_Programs] (ProgramID, AthleteUID) VALUES ('$ProgramID', '$AthleteUID')";
             $stmt = sqlsrv_query($db, $sql);
-            
+
             if ($stmt === False) {
-                // echo "Error in statement preparation/execution.\n";  
-                // exit(print_r(sqlsrv_errors(), True));
                 echo json_encode(False);
                 http_response_code(500);
                 return False;
