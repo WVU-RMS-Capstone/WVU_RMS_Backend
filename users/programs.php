@@ -50,6 +50,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogram') {
             updatePrograms();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogramexercises') {
+            updateProgramsExercises();
+        } 
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogramexercisenames') {
             getProgramExerciseNames();
         } 
@@ -549,16 +552,11 @@
         $db = $database->getConnection();
         
         // id is auto-incremented
-        $id = $_GET['exerciseID'];
-        $video = $_GET['Video'];
+        $id = $_GET['ProgramID'];
         $cover = $_GET['Cover'];
-        $name = $_GET['Name'];
-        $description = $_GET['Description'];
-        $sets = $_GET['Sets'];
-        $reps = $_GET['Reps'];
-        $body_part = strtoupper($_GET['BodyPart']);
+        $name = $_GET['ProgramName'];
             
-        $sql = "UPDATE [dbo].[Exercises] SET Video = '$video', Cover = '$cover', Name = '$name', Description = '$description', Sets = '$sets', Reps = '$reps', BodyPart = '$body_part WHERE exerciseID = '$exerciseID'";
+        $sql = "UPDATE [dbo].[Programs] SET ProgramName = '$name', Cover = '$cover' WHERE ProgramID = '$id'";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
@@ -571,6 +569,43 @@
         http_response_code(200);
         return true;
     }
+
+    /*
+    Description: 
+
+    Return: 
+    Example: 
+    */
+    function updateProgramsExercises()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        $programID = $_GET['ProgramID'];
+        $workout_1 = $_GET['Workout1'];
+        $workout_2 = $_GET['Workout2'];
+        $workout_3 = $_GET['Workout3'];
+        $workout_4 = $_GET['Workout4'];
+        $workout_5 = $_GET['Workout5'];
+        $workout_6 = $_GET['Workout6'];
+        $workout_7 = $_GET['Workout7'];
+        $workout_8 = $_GET['Workout8'];
+        $workout_9 = $_GET['Workout9'];
+        $workout_10 = $_GET['Workout10'];
+
+        $sql = "UPDATE [dbo].[Program_Exercises] SET Workout_1 = '$workout_1', Workout_2 = '$workout_2', Workout_3 = '$workout_3', Workout_4 = '$workout_4', Workout_5 = '$workout_5', Workout_6 = '$workout_6', Workout_7 = '$workout_7', Workout_8 = '$workout_8', Workout_9 = '$workout_9', Workout_10 = '$workout_10' WHERE Program_ID = '$programID'";
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === False) {
+            // echo "Error in statement preparation/execution.\n";  
+            exit(print_r(sqlsrv_errors(), True));
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
+        }
+        echo json_encode(True);
+        return true;
+    }
+
 
     /*
         Description: Fetches the set of exercises that make up a given program
