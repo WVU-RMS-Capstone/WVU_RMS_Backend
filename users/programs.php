@@ -50,6 +50,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogram') {
             updatePrograms();
         } 
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogramexercisenames') {
+            getProgramExerciseNames();
+        } 
         else {
             echo "Specified action not available.";
             http_response_code(201);
@@ -574,7 +577,7 @@
 
         Return: 
     */
-    function getProgramExercises()
+    function getProgramExerciseNames()
     {
         $database = new database();
         $db = $database->getConnection();
@@ -603,7 +606,7 @@
                 LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID
                 LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID
                 WHERE pe.Program_ID = '$ProgramID'";
-                
+
         $res = sqlsrv_query($db, $sql);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
         if ($r === NULL) {
