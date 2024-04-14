@@ -568,4 +568,52 @@
         http_response_code(200);
         return true;
     }
+
+    /*
+        Description: Fetches the set of exercises that make up a given program
+
+        Return: 
+    */
+    function getProgramExercises()
+    {
+        $database = new database();
+        $db = $database->getConnection();
+    
+        $ProgramID = $_GET['ProgramID'];
+    
+        $sql = "SELECT e1.Name AS workout1_name,
+                        e2.Name AS workout2_name,
+                        e3.Name AS workout3_name,
+                        e4.Name AS workout4_name,
+                        e5.Name AS workout5_name,
+                        e6.Name AS workout6_name,
+                        e7.Name AS workout7_name,
+                        e8.Name AS workout8_name,
+                        e9.Name AS workout9_name,
+                        e10.Name AS workout10_name
+                FROM [dbo].[Program_Exercises] pe
+                LEFT JOIN [dbo].[Exercises] e1 ON pe.Workout_1 = e1.exerciseID
+                LEFT JOIN [dbo].[Exercises] e2 ON pe.Workout_2 = e2.exerciseID
+                LEFT JOIN [dbo].[Exercises] e3 ON pe.Workout_3 = e3.exerciseID
+                LEFT JOIN [dbo].[Exercises] e4 ON pe.Workout_4 = e4.exerciseID
+                LEFT JOIN [dbo].[Exercises] e5 ON pe.Workout_5 = e5.exerciseID
+                LEFT JOIN [dbo].[Exercises] e6 ON pe.Workout_6 = e6.exerciseID
+                LEFT JOIN [dbo].[Exercises] e7 ON pe.Workout_7 = e7.exerciseID
+                LEFT JOIN [dbo].[Exercises] e8 ON pe.Workout_8 = e8.exerciseID
+                LEFT JOIN [dbo].[Exercises] e9 ON pe.Workout_9 = e9.exerciseID
+                LEFT JOIN [dbo].[Exercises] e10 ON pe.Workout_10 = e10.exerciseID
+                WHERE pe.Program_ID = '$ProgramID'";
+                
+        $res = sqlsrv_query($db, $sql);
+        $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC );
+        if ($r === NULL) {
+            echo json_encode(False);
+            http_response_code(409);
+            return False;
+        }
+
+        echo json_encode($r);
+        http_response_code(200);
+        return True;
+    }
 ?>
