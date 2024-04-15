@@ -254,7 +254,7 @@
         $check = "SELECT programID FROM [dbo].[Programs] WHERE ProgramName = '$program_name'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array($res, SQLSRV_FETCH_NUMERIC);
-        echo json_encode($r);
+        echo json_encode($r[0]);
         
         return true;
     }
