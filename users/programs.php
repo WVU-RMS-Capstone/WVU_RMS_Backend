@@ -272,6 +272,7 @@
         $db = $database->getConnection();
 
         // id is auto-incremented
+        $program_id = $_GET['ProgramID'];
         $workout_1 = $_GET['Workout1'];
         $workout_2 = $_GET['Workout2'];
         $workout_3 = $_GET['Workout3'];
@@ -284,7 +285,7 @@
         $workout_10 = $_GET['Workout10'];
         $workout_count = $_GET['WorkoutCount'];
 
-        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10, Workout_Count) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$workout_count')";
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Program_ID, Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10, Workout_Count) VALUES ('$program_id', '$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$workout_count')";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
