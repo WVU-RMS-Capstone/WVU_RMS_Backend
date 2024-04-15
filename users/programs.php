@@ -276,8 +276,13 @@
         $workout_8 = $_GET['Workout8'];
         $workout_9 = $_GET['Workout9'];
         $workout_10 = $_GET['Workout10'];
+        $i = 0;
+        
+        for ($i = 0; $i <= 10; $i++) {
+            if ($_GET["Workout$i"] === 0) break;
+        }
 
-        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10')";
+        $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10 Workout_Count) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$i)";
         $stmt = sqlsrv_query($db, $sql);
         if ($stmt === False) {
             // echo "Error in statement preparation/execution.\n";  
