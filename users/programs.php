@@ -280,7 +280,7 @@
         
         for ($i = 1; $i <= 10; $i++) {
             echo "Workout$i: " . $_GET["Workout$i"] . "\n";
-            if ($_GET["Workout$i"] === '0') break;
+            if (!strcmp($_GET["Workout$i"], '0')) break;
         }
 
         $sql = "INSERT INTO [dbo].[Program_Exercises] (Workout_1, Workout_2, Workout_3, Workout_4, Workout_5, Workout_6, Workout_7, Workout_8, Workout_9, Workout_10, Workout_Count) VALUES ('$workout_1', '$workout_2', '$workout_3', '$workout_4', '$workout_5', '$workout_6', '$workout_7', '$workout_8', '$workout_9', '$workout_10', '$i')";
