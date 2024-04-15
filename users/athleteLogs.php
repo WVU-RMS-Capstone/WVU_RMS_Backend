@@ -208,7 +208,7 @@
     
         $sql = "SELECT AP.CompletedExercises, PE.Workout_Count as TotalExercises
                 FROM [dbo].[Assigned_Programs] AP
-                JOIN [dbo].[Program_Exercises] PE ON AP.ProgramID = PE.ProgramID
+                JOIN [dbo].[Program_Exercises] PE ON AP.ProgramID = PE.Program_ID
                 WHERE AP.AthleteUID = '$athleteID'";
     
         $stmt = sqlsrv_query($db, $sql);
