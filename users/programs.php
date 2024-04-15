@@ -249,7 +249,13 @@
             http_response_code(500);
             return False;
         }
-        echo json_encode(True);
+        
+        // Send back the programID
+        $check = "SELECT programID FROM [dbo].[Programs] WHERE ProgramName = '$program_name'";
+        $res = sqlsrv_query($db, $check);
+        $r = sqlsrv_fetch_array($res, SQLSRV_FETCH_NUMERIC);
+        echo json_encode($r);
+        
         return true;
     }
 
