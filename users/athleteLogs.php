@@ -26,6 +26,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogress') {
             getProgress();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'programsignoff') {
+            programSignOff();
+        }
         else{
             echo "Specified action not available.";
             http_response_code(201);
@@ -226,5 +229,18 @@
             echo json_encode($row);
             http_response_code(200);
         }
+    }
+    
+    function programSignOff() {
+        $database = new database();
+        $db = $database->getConnection();
+        
+        $AthleteID = $_GET['AthleteID'];
+
+        $delete = "DELETE FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$AthleteID'";
+        $stmt = sqlsrv_query($db, $delete);
+
+        echo json_encode(true);
+        http_response_code(200); 
     }
 ?>
