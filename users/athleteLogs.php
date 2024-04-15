@@ -23,6 +23,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateprogress') {
             updateProgress();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getprogress') {
+            getProgress();
+        }
         else{
             echo "Specified action not available.";
             http_response_code(201);
@@ -195,5 +198,33 @@
         echo json_encode(True);
         http_response_code(200);
         return true;
+    }
+    
+    function getProgress() {
+        $database = new database();
+        $db = $database->getConnection();
+    
+        $athleteID = $_GET['AthleteID'];
+    
+        $sql = "SELECT AP.CompletedExercises, PE.Workout_Count as TotalExercises
+                FROM [dbo].[Assigned_Programs] AP
+                JOIN [dbo].[Program_Exercises] PE ON AP.ProgramID = PE.ProgramID
+                WHERE AP.AthleteID = '$athleteID'";
+    
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === false) {
+            echo "Something went wrong fetching the progress";
+            http_response_code(500);
+            exit(print_r(sqlsrv_errors(), true));
+        }
+    
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        if ($row === NULL) {
+            echo json_encode("No progress has been recorded yet.");
+            http_response_code(404);
+        } else {
+            echo json_encode($row);
+            http_response_code(200);
+        }
     }
 ?>
