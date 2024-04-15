@@ -279,6 +279,7 @@
         $i = 0;
         
         for ($i = 1; $i <= 10; $i++) {
+            echo "Workout$i: " . $_GET["Workout$i"] . "\n";
             if ($_GET["Workout$i"] === '0') break;
         }
 
