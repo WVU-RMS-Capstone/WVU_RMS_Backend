@@ -22,6 +22,9 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'updateuser') {
             updateUser();
         }
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'getuserimage') {
+            getUserImage();
+        }
         else{
             echo "Specified action not available.";
             http_response_code(201);
@@ -218,6 +221,26 @@
         }
         
         echo json_encode(True);
+        http_response_code(200);
+        return true;
+    }
+    
+    function getUserImage() {
+        $database = new database();
+        $db = $database->getConnection();
+
+        $userUID = $_GET['UID'];
+
+        $imageName = $userUID . '.jpg';
+
+        // Get the image file
+        $imagePath =  "/home/site/images/profile_images/$imageName";
+        $image = file_get_contents($imagePath);
+
+        // Encode the image as a base64 string
+        $base64Image = 'data:image/jpeg;base64,' . base64_encode($image);
+        
+        echo json_encode($base64Image);
         http_response_code(200);
         return true;
     }
