@@ -22,7 +22,7 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'updateuser') {
             updateUser();
         }
-        else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'getuserimage') {
+        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getuserimage') {
             getUserImage();
         }
         else{
