@@ -19,7 +19,7 @@
         else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getuserinfo') {
             getUserInfo();
         }
-        else if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'updateuser') {
+        else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'updateuser') {
             updateUser();
         }
         else{
@@ -176,30 +176,40 @@
     Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=login&UID=0000000000000000000000000000&email=test@
     */
     function updateUser(){
-        // new conect
         $database = new database();
         $db = $database->getConnection();
 
-        $first_name = $_GET['firstName'];
-        $last_name = $_GET['lastName'];
-        $userUID = $_GET['UID'];
-        $email = $_GET['email'];
-        $athleteImage = $_GET['athleteImage'];
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $first_name = $data['firstName'];
+        $last_name = $data['lastName'];
+        $userUID = $data['UID'];
+        $email = $data['email'];
+        $base64Image = $data['image'];
 
-        $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$athleteImage' WHERE UID = '$userUID'";
+        // Remove the 'data:image/jpeg;base64,' part
+        $base64Image = str_replace('data:image/jpeg;base64,', '', $base64Image);
+
+        // Decode the base64 string
+        $image = base64_decode($base64Image);
+
+        // Generate a unique name for the image
+        $imageName = $userUID . '.jpg';
+
+        // Save the image to a directory on your server
+        file_put_contents("/profile_images/$imageName", $image);
+
+        $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$imageName' WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $sql);
-        if($stmt === False){  
-            echo "Error in statement preparation/execution.\n";  
-            exit( print_r( sqlsrv_errors(), True));  
+        if ($stmt === False) {
             echo json_encode(False);
+            http_response_code(500);
             return False;
         }
-
-        // Free resources
-        sqlsrv_free_stmt($stmt);
-        sqlsrv_close($db);
+        
         echo json_encode(True);
         http_response_code(200);
+        return true;
     }
 ?>
 
