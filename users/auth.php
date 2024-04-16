@@ -146,26 +146,36 @@
     Example: https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=login&UID=0000000000000000000000000000&email=test@
     */
     function getUserInfo(){
-        // new conect
         $database = new database();
         $db = $database->getConnection();
 
         $userUID = $_GET['UID'];
 
-        $tsql = "SELECT firstName, lastName, Email, Role, AthleteImage FROM [dbo].[Users] WHERE UID = '$userUID'";
-        $stmt = sqlsrv_query($db, $tsql);
-        if( $stmt === false ){  
-            echo "Error in statement preparation/execution.\n";  
-            exit( print_r( sqlsrv_errors(), true));  
+        $sql = "SELECT firstName, lastName, Email, Role, AthleteImage FROM [dbo].[Users] WHERE UID = '$userUID'";
+        $stmt = sqlsrv_query($db, $sql);
+        if ($stmt === False) {
+            echo json_encode(False);
+            http_response_code(500);
+            return False;
         }
-        $rows = array();
-        $i = 0;
-        while ($row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_NUMERIC )) {
-            $i++;
-            $rows[] = array('data' => $row);
-        }
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        $imageName = $row['AthleteImage'];
+
+        // Get the image file
+        $imagePath = "/profile_images/$imageName";
+        $image = file_get_contents($imagePath);
+
+        // Encode the image as a base64 string
+        $base64Image = 'data:image/jpeg;base64,' . base64_encode($image);
+        
+        // Add the base64 image to the row
+        $row['AthleteImage'] = $base64Image;
+
+        $rows[] = array('data' => $row);
         echo json_encode($rows);
         http_response_code(200);
+        return true;
     }
 
      /*
