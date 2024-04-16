@@ -163,7 +163,7 @@
         $imageName = $userUID . '.jpg';
 
         // Get the image file
-        $imagePath = __DIR__ . "/profile_images/$imageName";
+        $imagePath =  "/home/site/images/profile_images/$imageName";
         $image = file_get_contents($imagePath);
 
         // Encode the image as a base64 string
@@ -207,7 +207,7 @@
         $imageName = $userUID . '.jpg';
 
         // Save the image to a directory on your server
-        file_put_contents(__DIR__ . "/profile_images/$imageName", $image);
+        file_put_contents("/home/site/images/profile_images/$imageName", $image);
 
         $sql = "UPDATE [dbo].[Users] SET firstName = '$first_name', lastName = '$last_name', Email = '$email', AthleteImage = '$imageName' WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $sql);
