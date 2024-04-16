@@ -178,10 +178,10 @@
         $database = new database();
         $db = $database->getConnection();
         
-        $id = $_GET['ProgramID'];
+        $id = $_GET['AthleteUID'];
         $current = $_GET['CurrentExercise'];
             
-        $sql = "SELECT CompletedExercises FROM [dbo].[Assigned_Programs] WHERE ProgramID = '$id'";
+        $sql = "SELECT CompletedExercises FROM [dbo].[Assigned_Programs] WHERE AthleteUID = '$id'";
         $stmt = sqlsrv_query($db, $sql);
         $r = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_NUMERIC);
         if ($r === NULL) {
@@ -189,7 +189,7 @@
             http_response_code(409);
             return False;
         } else if ($r[0] < intval($current)) {
-            $sql = "UPDATE [dbo].[Assigned_Programs] SET CompletedExercises = '$current' WHERE ProgramID = '$id'";
+            $sql = "UPDATE [dbo].[Assigned_Programs] SET CompletedExercises = '$current' WHERE AthleteUID = '$id'";
             $stmt = sqlsrv_query($db, $sql);
             if ($stmt === False) {
                 echo json_encode(False);
