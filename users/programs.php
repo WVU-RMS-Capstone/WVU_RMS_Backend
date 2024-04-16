@@ -140,7 +140,7 @@
         $database = new database();
         $db = $database->getConnection();
 
-        $tsql = "SELECT exerciseID, Name, LOWER(BodyPart) asBodyPart, cover, Description, Sets, Reps, video FROM [dbo].[Exercises]";
+        $tsql = "SELECT exerciseID, Name, LOWER(BodyPart) as BodyPart, cover, Description, Sets, Reps, video FROM [dbo].[Exercises]";
         $stmt = sqlsrv_query($db, $tsql);
         if ($stmt === false) {
             echo "Something went wrong fetching the exercises";
