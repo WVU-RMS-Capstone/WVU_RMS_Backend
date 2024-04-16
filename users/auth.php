@@ -160,7 +160,7 @@
         }
 
         $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-        $imageName = $row['AthleteImage'] . '.jpg';
+        $imageName = $userUID . '.jpg';
 
         // Get the image file
         $imagePath = "/profile_images/$imageName";
