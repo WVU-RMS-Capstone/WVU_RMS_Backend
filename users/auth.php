@@ -53,7 +53,7 @@
         $db = $database->getConnection();
         
         // Check if username exists
-        $check = "SELECT UID FROM [dbo].[Users] WHERE lastName = '$last_name'";
+        $check = "SELECT UID FROM [dbo].[Users] WHERE Email = '$email'";
         $res = sqlsrv_query($db, $check);
         $r = sqlsrv_fetch_array( $res, SQLSRV_FETCH_NUMERIC );
 
