@@ -116,6 +116,8 @@
             sqlsrv_close($db);
             return False;
         }
+
+        echo json_encode($row);
         
         // If the UID and the email match the row from the select statement
             // Get the row that contains the role of the user and store it into a variable
@@ -123,11 +125,6 @@
         if ($userUID === $row[0] && $email === $row[3]){
             // store role variable
             $role = $row[4];
-            
-            // free resources
-            sqlsrv_free_stmt($stmt);
-            sqlsrv_close($db);
-
             // print role to the site
             echo json_encode($role);
             http_response_code(200);  
