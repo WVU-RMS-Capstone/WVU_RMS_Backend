@@ -99,9 +99,9 @@
         $db = $database->getConnection();
 
         $userUID = $_GET['UID'];
-        $email = $_GET['email'];
+        $email = strtolower($_GET['email']);
 
-        $tsql = "SELECT UID, FirstName, LastName, Email, Role FROM [dbo].[Users] WHERE UID = '$userUID'";
+        $tsql = "SELECT UID, FirstName, LastName, LOWER(Email) as Email, Role FROM [dbo].[Users] WHERE UID = '$userUID'";
         $stmt = sqlsrv_query($db, $tsql);
         if( $stmt === false ){  
             echo "Error in statement preparation/execution.\n";  
