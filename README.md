@@ -16,7 +16,7 @@ Parameters in a url look like:
 (Continued for however many parameters needed.)
 
 
-# Create an Account 
+# Authentication 
 ### createAccount | /users/auth.php
 To have a user create an account we need to send the api the information of the user through the parameters in the URL.
 
@@ -44,7 +44,6 @@ Note: This response from the URL will be `Username Already Exists."ID: 2"`
 **NOTE**
 All authentication is conducted through Firebase Authentication. Azure is used to store data on the users to include name, email, role, and UID, which comes from firebase itself. Frontend code handles authentication, while the backend will be used to verify the user and get access to the correct screens on the application. 
 
-# Login Into Application
 ### Login |  /users/auth.php
 To login, the API will read the url to gather the information from the user.
 
@@ -65,82 +64,117 @@ EXAMPLE:
 
 `"Invalid Credentials"` - Invalid login credentials were inputted.
 
-## Logout | /users/auth.php
-All we need to send to the API for a user to logout is the action variable value 'logout' and their UserID.
+### getUserInfo | /users/auth.php
+Send a get request to **/users/auth.php** from our react-native app.
+With the following parameters:
 
- - **action=logout**
- - **userid={ID}**
+ - **action=createaccount**
+ - **firstName={firstName}**
+ - **lastName={lastName}**
+ - **UID={UID}**
+ - **email={email}**
+ - **role={role}** Athlete or Trainer
+EXAMPLE
 
-**This will be updated in the future by providing the API with the username instead of the userid**
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### updateUser | /users/auth.php
+EXAMPLE
 
-You can get the userid via the user data methods below.
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getUserImage | /users/auth.php
+EXAMPLE
 
-EXAMPLE:
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
 
-    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=logout&userid=15
-https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=logout&userid=15
+#  Athlete Logs
+### addNotes | /users/athleteLogs.php
+EXAMPLE
 
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getRoster | /users/athleteLogs.php
+EXAMPLE
 
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getNotes | /users/athleteLogs.php
+EXAMPLE
 
-# User Data
-All ways to get a users assigned workouts / user info
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### updateProgress | /users/athleteLogs.php
+EXAMPLE
 
-**All requests to this endpoint must have the bearer token in the authorization header of the get request. You will not be able to get information if the user does not have a active session.**
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getProgress | /users/athleteLogs.php
+EXAMPLE
 
-To get a session token from the user you must have the user login.
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### programSignOff | /users/athleteLogs.php
+EXAMPLE
 
-React-Native example code:
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
 
-    fetch('https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=userinfo
-    ', {
-    	headers: {
-    		'Authorization': 'Bearer ' + session_token
-    	}
-    })
-    .then(response => {
-    // handle response
-    
-    })
-    .catch(error => {
-    // handle error
-    
-    });
+#  Programs Information
+### createExercise | /users/programs.php
+EXAMPLE
 
-The auth string should look like this:
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### fetchPremadePrograms | /users/programs.php
+EXAMPLE
 
-    Bearer 9913f272ed8a08587cefb45634e15ef1788531f119a663acd505406962f72e1a
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### createProgram | /users/programs.php
+EXAMPLE
 
-## Get UserInfo | /users/users.php
-This returns the user info such as (Name, Player Number, Account Type...)
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### fetchAllExercises | /users/programs.php
+EXAMPLE
 
-All you need to send to the API is the action variable with value 'userinfo' and you must include the authorization token in the auth header.
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### fetchExercises | /users/programs.php
+EXAMPLE
 
- - **action=userinfo**
-+ **session_token in auth header**
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### addProgramExercises | /users/programs.php
+EXAMPLE
 
-EXAMPLE: 
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getProgramExercises | /users/programs.php
+EXAMPLE
 
-    https://restapi-playerscompanion.azurewebsites.net/users/users.php?action=userinfo
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### addAthleteProgram | /users/programs.php
+EXAMPLE
 
-**Return Types**
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getAthleteProgram | /users/programs.php
+EXAMPLE
 
-`"Missing Authorization Header."` - Must include session_token in auth header.
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getProgramInfo | /users/programs.php
+EXAMPLE
 
-`"Session expired. Please login again."` - Users session expired. Typically this is if the user reached the 8hr session limit or if the user has logged out.
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### updateExercise | /users/programs.php
+EXAMPLE
 
-If there is a active session you will receive a json object like below:
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### deleteExercise | /users/programs.php
+EXAMPLE
 
-    {
-    "UserId": 15,
-    "FirstName":"Grant",
-    "MiddleName": "Perry",
-    "LastName": "Holzemer",
-    "UserType": "P",
-    "Username": "grantiscool",
-    "Password": "bae5e3208a3c700e3db642b6631e95b9",
-    "PlayerNumber": 999999999,
-    "Code": 99999999,
-    "Position": null
-    }
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### deleteProgram | /users/programs.php
+EXAMPLE
 
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### updateProgram | /users/programs.php
+EXAMPLE
+
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### updateProgramsExercises | /users/programs.php
+EXAMPLE
+
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
+### getProgramExercisesNames | /users/programs.php
+EXAMPLE
+
+    https://restapi-playerscompanion.azurewebsites.net/users/auth.php?action=createaccount&firstName=testing&lastName=testing&UID=2&email=testing@
 
