@@ -115,10 +115,7 @@
             sqlsrv_free_stmt($stmt);
             sqlsrv_close($db);
             return False;
-        }
-
-        echo json_encode($row);
-        
+        }        
         // If the UID and the email match the row from the select statement
             // Get the row that contains the role of the user and store it into a variable
             // return the role of that user
